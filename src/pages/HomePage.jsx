@@ -1,8 +1,6 @@
 function HomePage() {
   return (
-    <Container>
-      <h1>EShop</h1>
-    </Container>
+     <h1>EShop</h1>
   )
 }
 
