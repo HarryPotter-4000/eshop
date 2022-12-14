@@ -15,7 +15,10 @@ export default function ListItem(props) {
   return (
     <Card
       sx={{
-        width: 240,
+        width: {
+          sm: "240px",
+          xs: "280px",
+        },
         height: 360,
         boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
         margin: "16px",
@@ -40,10 +43,21 @@ export default function ListItem(props) {
           <Typography gutterBottom variant="h5" component="div">
             {name}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              display: "-webkit-box",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: 3,
+              height: "64px",
+            }}
+          >
             {description}
           </Typography>
-          <Typography variant="h5" color="text.secondary">
+          <Typography variant="h5" color="price.main">
             {price}$
           </Typography>
         </CardContent>
@@ -54,10 +68,12 @@ export default function ListItem(props) {
             justifyContent: "center",
           }}
         >
-          <Link to={`/product/${id}`}>
-            <Button size="small">Learn More</Button>
-          </Link>
-          <Button size="small">BUY</Button>
+          <Button component={Link} to={`/product/${id}`} variant="text">
+            More
+          </Button>
+          <Button component={Link} to={`/cart`} variant="text">
+            BUY
+          </Button>
         </CardActions>
       </Stack>
     </Card>
