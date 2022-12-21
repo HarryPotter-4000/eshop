@@ -2,10 +2,10 @@ import * as React from "react";
 import Logo from "../assets/image/logo.png";
 import {
   AppBar,
-  Avatar,
   Box,
   Drawer,
   Toolbar,
+  Stack,
   IconButton,
   List,
   ListItem,
@@ -14,15 +14,13 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link } from "react-router-dom";
+import CartIcon from "../assets/CartIcon";
+import UserMenu from "./UserMenu";
 
 const HEADER_NAVIGATION = [
   {
     url: "/",
     caption: "Home",
-  },
-  {
-    url: "/cart",
-    caption: "Cart",
   },
   {
     url: "/order",
@@ -71,7 +69,6 @@ function Header() {
         }}
       >
         <Toolbar
-          maxWidth="lg"
           sx={{
             display: "flex",
             flexDirection: "row",
@@ -83,56 +80,47 @@ function Header() {
               <img src={Logo} alt="Logo" width={100} />
             </Link>
           </Box>
-          <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            {HEADER_NAVIGATION.map(({ url, caption }) => (
-              <Link
-                key={url}
-                style={{
-                  textDecoration: "none",
-                  color: "#fff",
-                  paddingRight: "24px",
-                  fontSize: "20px",
-                  fontWeight: "600",
-                  "&:hover": {
-                    color: "#FF1E56",
-                  },
-                  "&:active": {
-                    color: "#FF1E56",
-                  },
-                  "&:focus": {
-                    color: "#FF1E56",
-                  },
-                }}
-                to={url}
-              >
-                {caption}
-              </Link>
-            ))}
-          </Box>
-          <IconButton
-            color="#ff900c"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ display: { sm: "none" } }}
-          >
-            <MenuIcon sx={{ color: "#fff", fontSize: 30 }} />
-          </IconButton>
-          <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            <Avatar
-              sx={{
-                backgroundColor: "inherit",
-                color: "#fff",
-                fontWeight: "700",
-                borderStyle: "solid",
-                borderColor: "#fff",
-                borderWidth: "2px",
-                borderRadius: "50%",
-              }}
+          <Stack direction="row" spacing={2} alignItems="center">
+            <Box sx={{ display: { xs: "none", sm: "block" } }}>
+              {HEADER_NAVIGATION.map(({ url, caption }) => (
+                <Link
+                  key={url}
+                  style={{
+                    textDecoration: "none",
+                    color: "#fff",
+                    paddingRight: "24px",
+                    fontSize: "20px",
+                    fontWeight: "600",
+                    "&:hover": {
+                      color: "#FF1E56",
+                      transition: "all 0.3s ease-out",
+                    },
+                    "&:active": { color: "#FF1E56" },
+                    "&:focus": {
+                      color: "#FF1E56",
+                    },
+                  }}
+                  to={url}
+                >
+                  {caption}
+                </Link>
+              ))}
+            </Box>
+
+            <Link style={{ textDecoration: "none" }} to={"/cart"}>
+              <CartIcon />
+            </Link>
+            <UserMenu sx={{ display: { xs: "none", sm: "block" } }} />
+            <IconButton
+              color="#ff900c"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ display: { sm: "none" } }}
             >
-              N
-            </Avatar>
-          </Box>
+              <MenuIcon sx={{ color: "#fff", fontSize: 30 }} />
+            </IconButton>
+          </Stack>
         </Toolbar>
       </AppBar>
       <Box component="nav">
@@ -153,21 +141,6 @@ function Header() {
             },
           }}
         >
-          <Box p={2} sx={{ display: { xs: "block", sm: "none" } }}>
-            <Avatar
-              sx={{
-                backgroundColor: "inherit",
-                color: "#fff",
-                fontWeight: "700",
-                borderStyle: "solid",
-                borderColor: "#fff",
-                borderWidth: "3px",
-                borderRadius: "50%",
-              }}
-            >
-              N
-            </Avatar>
-          </Box>
           {drawer}
         </Drawer>
       </Box>

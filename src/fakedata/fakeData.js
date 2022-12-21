@@ -17,7 +17,8 @@ const PRODUCTS = [
   {
     id: 2,
     name: "Cake",
-    description: "The cake is a lie",
+    description:
+      'The cake is a lie. Recipe: In addition to the simple mention of the Cake, an actual recipe is given. The recipe can be found on several computer screens after Chell\'s escape from death. Additionally, during the battle with GLaDOS, the Intelligence Core will recite the recipe for the Cake. The recipe often contains unusual (e.g. "candy coated peanut butter pieces, shaped like fish") or potentially lethal (e.g. "cranial caps") ingredients.',
     price: 25,
     image: cake,
     // other fields
