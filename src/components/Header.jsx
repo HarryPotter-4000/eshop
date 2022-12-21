@@ -71,7 +71,6 @@ function Header() {
         }}
       >
         <Toolbar
-          maxWidth="lg"
           sx={{
             display: "flex",
             flexDirection: "row",
