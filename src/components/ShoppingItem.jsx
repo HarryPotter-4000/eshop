@@ -30,14 +30,10 @@ function ShoppingItem(props) {
             sx={{
               display: 'flex',
               flexDirection: {
-                lg: 'row',
-                md: 'row',
                 sm: 'row',
                 xs: 'column',
               },
               justifyContent: {
-                lg: 'space-between',
-                md: 'space-between',
                 sm: 'space-between',
                 xs: 'flex-start',
               },

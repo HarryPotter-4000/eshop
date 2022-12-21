@@ -133,8 +133,7 @@ function Cart() {
             m={0}
             sx={{
               alignSelfh: {
-                lg: 'center',
-                md: 'center',
+                sm: 'center',
                 xs: 'flex-start',
               },
             }}
