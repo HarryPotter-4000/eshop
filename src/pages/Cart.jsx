@@ -161,8 +161,6 @@ function Cart() {
             p: '24px',
             backgroundColor: '#90CAF9',
             alignItems: {
-              lg: 'flex-end',
-              md: 'flex-end',
               sm: 'flex-end',
               xs: 'center',
             },
@@ -172,8 +170,6 @@ function Cart() {
             sx={{
               display: 'flex',
               flexDirection: {
-                lg: 'row',
-                md: 'row',
                 sm: 'row',
                 xs: 'column',
               },
