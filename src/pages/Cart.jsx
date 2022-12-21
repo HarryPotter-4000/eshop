@@ -76,8 +76,8 @@ function Cart() {
         if (product.id === id) {
           return {
             ...product,
-            count: ++product.count,
-            priceTotal: product.price * product.count,
+            count: product.count + 1,
+            priceTotal: product.price * (product.count + 1),
           };
         }
         return product;
@@ -90,8 +90,8 @@ function Cart() {
         if (product.id === id) {
           return {
             ...product,
-            count: --product.count,
-            priceTotal: product.price * product.count,
+            count: product.count - 1,
+            priceTotal: product.price * (product.count - 1),
           };
         }
         return product;
@@ -138,22 +138,15 @@ function Cart() {
               },
             }}
           >
-            {cart.map((product) => {
-              return (
-                <ShoppingItem
-                  id={product.id}
-                  image={product.image}
-                  name={product.name}
-                  price={product.price}
-                  count={product.count}
-                  priceTotal={product.priceTotal}
-                  key={product.id}
-                  deleteProduct={deleteProduct}
-                  increaseCount={increaseCount}
-                  decreaseCount={decreaseCount}
-                />
-              );
-            })}
+            {cart.map((product) => (
+              <ShoppingItem
+                {...product}
+                key={product.id}
+                deleteProduct={deleteProduct}
+                increaseCount={increaseCount}
+                decreaseCount={decreaseCount}
+              />
+            ))}
           </Box>
         </Box>
         <Stack
