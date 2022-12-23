@@ -1,5 +1,5 @@
-import * as React from "react";
-import Logo from "../assets/image/logo.png";
+import * as React from 'react';
+import Logo from '../assets/image/logo.png';
 import {
   AppBar,
   Avatar,
@@ -11,22 +11,26 @@ import {
   ListItem,
   ListItemButton,
   Container,
-} from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import { Link } from "react-router-dom";
+} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import { Link } from 'react-router-dom';
 
 const HEADER_NAVIGATION = [
   {
-    url: "/",
-    caption: "Home",
+    url: '/',
+    caption: 'Home',
   },
   {
-    url: "/cart",
-    caption: "Cart",
+    url: '/cart',
+    caption: 'Cart',
   },
   {
-    url: "/order",
-    caption: "Order",
+    url: '/order',
+    caption: 'Order',
+  },
+  {
+    url: '/signin',
+    caption: 'SignIn',
   },
 ];
 
@@ -42,13 +46,13 @@ function Header() {
       <List space={2}>
         {HEADER_NAVIGATION.map(({ url, caption }) => (
           <ListItem key={url} disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }}>
+            <ListItemButton sx={{ textAlign: 'center' }}>
               <Link
                 style={{
-                  textDecoration: "none",
-                  color: "#fff",
-                  fontSize: "20px",
-                  fontWeight: "600",
+                  textDecoration: 'none',
+                  color: '#fff',
+                  fontSize: '20px',
+                  fontWeight: '600',
                 }}
                 to={url}
               >
@@ -62,45 +66,44 @@ function Header() {
   );
 
   return (
-    <Container sx={{ display: "flex" }}>
+    <Container sx={{ display: 'flex' }}>
       <AppBar
         component="nav"
         sx={{
-          height: "70px",
-          backgroundColor: "#ff900c",
+          height: '70px',
+          backgroundColor: '#ff900c',
         }}
       >
         <Toolbar
-          maxWidth="lg"
           sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
           }}
         >
-          <Box pt={1} sx={{ justifyContent: "flex-start" }}>
-            <Link style={{ textDecoration: "none" }} to={"/"}>
+          <Box pt={1} sx={{ justifyContent: 'flex-start' }}>
+            <Link style={{ textDecoration: 'none' }} to={'/'}>
               <img src={Logo} alt="Logo" width={100} />
             </Link>
           </Box>
-          <Box sx={{ display: { xs: "none", sm: "block" } }}>
+          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {HEADER_NAVIGATION.map(({ url, caption }) => (
               <Link
                 key={url}
                 style={{
-                  textDecoration: "none",
-                  color: "#fff",
-                  paddingRight: "24px",
-                  fontSize: "20px",
-                  fontWeight: "600",
-                  "&:hover": {
-                    color: "#FF1E56",
+                  textDecoration: 'none',
+                  color: '#fff',
+                  paddingRight: '24px',
+                  fontSize: '20px',
+                  fontWeight: '600',
+                  '&:hover': {
+                    color: '#FF1E56',
                   },
-                  "&:active": {
-                    color: "#FF1E56",
+                  '&:active': {
+                    color: '#FF1E56',
                   },
-                  "&:focus": {
-                    color: "#FF1E56",
+                  '&:focus': {
+                    color: '#FF1E56',
                   },
                 }}
                 to={url}
@@ -114,20 +117,20 @@ function Header() {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ display: { sm: "none" } }}
+            sx={{ display: { sm: 'none' } }}
           >
-            <MenuIcon sx={{ color: "#fff", fontSize: 30 }} />
+            <MenuIcon sx={{ color: '#fff', fontSize: 30 }} />
           </IconButton>
-          <Box sx={{ display: { xs: "none", sm: "block" } }}>
+          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             <Avatar
               sx={{
-                backgroundColor: "inherit",
-                color: "#fff",
-                fontWeight: "700",
-                borderStyle: "solid",
-                borderColor: "#fff",
-                borderWidth: "2px",
-                borderRadius: "50%",
+                backgroundColor: 'inherit',
+                color: '#fff',
+                fontWeight: '700',
+                borderStyle: 'solid',
+                borderColor: '#fff',
+                borderWidth: '2px',
+                borderRadius: '50%',
               }}
             >
               N
@@ -137,7 +140,7 @@ function Header() {
       </AppBar>
       <Box component="nav">
         <Drawer
-          anchor={"right"}
+          anchor={'right'}
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
@@ -145,24 +148,24 @@ function Header() {
             keepMounted: true, // Better open performance on mobile.
           }}
           sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: "200px",
-              backgroundColor: "#ff900c",
+            display: { xs: 'block', sm: 'none' },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: '200px',
+              backgroundColor: '#ff900c',
             },
           }}
         >
-          <Box p={2} sx={{ display: { xs: "block", sm: "none" } }}>
+          <Box p={2} sx={{ display: { xs: 'block', sm: 'none' } }}>
             <Avatar
               sx={{
-                backgroundColor: "inherit",
-                color: "#fff",
-                fontWeight: "700",
-                borderStyle: "solid",
-                borderColor: "#fff",
-                borderWidth: "3px",
-                borderRadius: "50%",
+                backgroundColor: 'inherit',
+                color: '#fff',
+                fontWeight: '700',
+                borderStyle: 'solid',
+                borderColor: '#fff',
+                borderWidth: '3px',
+                borderRadius: '50%',
               }}
             >
               N
