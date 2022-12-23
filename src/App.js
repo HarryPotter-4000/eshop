@@ -1,11 +1,12 @@
-import "./App.css";
-import { Routes, Route } from "react-router";
-import Home from "./pages/Home";
-import Cart from "./pages/Cart";
-import Product from "./pages/Product";
-import OrderPage from "./pages/OrderPage";
-import Header from "./components/Header";
-import { Container } from "@mui/system";
+import './App.css';
+import { Routes, Route } from 'react-router';
+import Home from './pages/Home';
+import Cart from './pages/Cart';
+import Product from './pages/Product';
+import OrderPage from './pages/OrderPage';
+import Header from './components/Header';
+import SignIn from './pages/SignIn';
+import { Container } from '@mui/system';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/signin" element={<SignIn />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/product/:id" element={<Product />} />
         <Route path="/order" element={<OrderPage />} />
