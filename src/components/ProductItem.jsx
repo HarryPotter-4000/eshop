@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   Card,
   CardActions,
@@ -7,21 +7,21 @@ import {
   Button,
   Stack,
   Typography,
-} from "@mui/material";
-import { Link } from "react-router-dom";
+} from '@mui/material';
+import { Link } from 'react-router-dom';
 
-export default function ListItem(props) {
-  const { id, image, name, description, price } = props;
+export default function ProductItem(props) {
+  const { id, image, name, description, price, addToOrder } = props;
   return (
     <Card
       sx={{
         width: {
-          sm: "240px",
-          xs: "280px",
+          sm: '240px',
+          xs: '280px',
         },
         height: 360,
-        boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
-        margin: "16px",
+        boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
+        margin: '16px',
       }}
     >
       <CardMedia
@@ -32,10 +32,10 @@ export default function ListItem(props) {
       />
       <Stack
         sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          backgroundColor: "#1976d226",
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          backgroundColor: '#1976d226',
           height: 220,
         }}
       >
@@ -47,12 +47,12 @@ export default function ListItem(props) {
             variant="body2"
             color="text.secondary"
             sx={{
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              display: "-webkit-box",
-              WebkitBoxOrient: "vertical",
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              display: '-webkit-box',
+              WebkitBoxOrient: 'vertical',
               WebkitLineClamp: 3,
-              height: "64px",
+              height: '64px',
             }}
           >
             {description}
@@ -63,15 +63,25 @@ export default function ListItem(props) {
         </CardContent>
         <CardActions
           sx={{
-            backgroundColor: "#1976d226",
-            display: "flex",
-            justifyContent: "center",
+            backgroundColor: '#1976d226',
+            display: 'flex',
+            justifyContent: 'center',
           }}
         >
           <Button component={Link} to={`/product/${id}`} variant="text">
             More
           </Button>
-          <Button component={Link} to={`/cart`} variant="text">
+          <Button
+            variant="text"
+            onClick={() =>
+              addToOrder({
+                id: props.id,
+                name: props.name,
+                price: props.price,
+                image: props.image,
+              })
+            }
+          >
             BUY
           </Button>
         </CardActions>
