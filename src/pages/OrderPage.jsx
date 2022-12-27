@@ -57,6 +57,7 @@ export default function OrderPage() {
                 fullWidth
                 label="name"
                 name="name"
+                type="text"
                 autoComplete="name"
                 autoFocus
                 sx={{
@@ -64,7 +65,7 @@ export default function OrderPage() {
                 }}
                 {...register('name', {
                   required: 'Please, fill in the name',
-                  max: { value: 100, message: 'Your name is too long' },
+                  max: { value: 25, message: 'Your name is too long' },
                   validate: (value) =>
                     !!value.trim() || 'Please, fill in the name',
                 })}
@@ -79,13 +80,14 @@ export default function OrderPage() {
                 fullWidth
                 label="surname"
                 name="surname"
+                type="text"
                 autoComplete="surname"
                 sx={{
                   fieldset: { borderColor: 'bgBlue.main', borderWidth: '2px' },
                 }}
                 {...register('surname', {
                   required: 'Please, fill in the surname',
-                  max: { value: 100, message: 'Your surname is too long' },
+                  max: { value: 25, message: 'Your surname is too long' },
                   validate: (value) =>
                     !!value.trim() || 'Please, fill in the surname',
                 })}
@@ -102,7 +104,7 @@ export default function OrderPage() {
             label="Phone"
             name="phone"
             autoComplete="phone"
-            type="number"
+            type="phone"
             sx={{
               fieldset: { borderColor: 'bgBlue.main', borderWidth: '2px' },
             }}
@@ -127,6 +129,7 @@ export default function OrderPage() {
             fullWidth
             id="email"
             label="Email Address"
+            type="email"
             name="email"
             autoComplete="email"
             sx={{

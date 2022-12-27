@@ -59,6 +59,7 @@ export default function SignIn() {
             id="email"
             label="Email Address"
             name="email"
+            type="email"
             autoComplete="email"
             sx={{
               fieldset: { borderColor: 'bgBlue.main', borderWidth: '2px' },
