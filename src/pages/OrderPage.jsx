@@ -69,7 +69,7 @@ export default function OrderPage() {
                     !!value.trim() || 'Please, fill in the name',
                 })}
                 error={!!errors?.name}
-                helperText={errors?.name ? errors.name.message : null}
+                helperText={errors?.name && errors.name.message}
               />
             </Box>
             <Box>
