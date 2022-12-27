@@ -52,16 +52,36 @@ function App() {
     }
   };
   const addToOrderfromProductPage = (orderItem) => {
-    setOrder([
-      ...order,
-      {
-        id: orderItem.id,
-        name: orderItem.name,
-        price: orderItem.price,
-        image: orderItem.image,
-        count: orderItem.count,
-      },
-    ]);
+    const found = order.find((obj) => {
+      return obj.id === orderItem.id;
+    });
+    if (found) {
+      let count = found.count + orderItem.count;
+      setOrder(
+        order.map((item) => {
+          if (item.id !== orderItem.id) return item;
+
+          return {
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            image: item.image,
+            count,
+          };
+        })
+      );
+    } else {
+      setOrder([
+        ...order,
+        {
+          id: orderItem.id,
+          name: orderItem.name,
+          price: orderItem.price,
+          image: orderItem.image,
+          count: orderItem.count,
+        },
+      ]);
+    }
   };
 
   const removeFromOrder = (orderItem) => {
