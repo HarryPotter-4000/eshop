@@ -21,7 +21,7 @@ export default function OrderPage() {
     data.name = data.name.trim();
     data.phone = `+${data.phone}`;
     data.email = data.email.trim();
-    console.log(JSON.stringify(data, null));
+    console.log(JSON.stringify(data));
     reset();
   };
 
