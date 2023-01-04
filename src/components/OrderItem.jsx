@@ -7,7 +7,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 function OrderItem(props) {
   const {
     count,
-    id,
     image,
     name,
     price,
@@ -87,12 +86,7 @@ function OrderItem(props) {
                 aria-label="small button group"
                 sx={{ color: '#90CAF9' }}
               >
-                <IconButton
-                  sx={{ p: 0 }}
-                  onClick={() => {
-                    increaseCount(id);
-                  }}
-                >
+                <IconButton sx={{ p: 0 }} onClick={increaseCount}>
                   <AddIcon sx={{ color: '#90CAF9', size: 'small' }} />
                 </IconButton>
 
@@ -106,9 +100,7 @@ function OrderItem(props) {
                   <IconButton
                     sx={{ p: 0 }}
                     disabled={count <= 1}
-                    onClick={() => {
-                      decreaseCount(id);
-                    }}
+                    onClick={decreaseCount}
                   >
                     <RemoveIcon sx={{ color: '#90CAF9', size: 'small' }} />
                   </IconButton>
@@ -117,10 +109,7 @@ function OrderItem(props) {
               <Typography variant="h6" sx={{ color: '#E91E63' }}>
                 ${price * count}
               </Typography>
-              <IconButton
-                aria-label="delete"
-                onClick={() => removeFromOrder(id)}
-              >
+              <IconButton aria-label="delete" onClick={removeFromOrder}>
                 <DeleteIcon />
               </IconButton>
             </Box>

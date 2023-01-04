@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 
 export default function ProductItem(props) {
   const { id, image, name, description, price, addToOrder } = props;
+  const counter = 1;
   return (
     <Card
       sx={{
@@ -73,14 +74,9 @@ export default function ProductItem(props) {
           </Button>
           <Button
             variant="text"
-            onClick={() =>
-              addToOrder({
-                id: props.id,
-                name: props.name,
-                price: props.price,
-                image: props.image,
-              })
-            }
+            onClick={() => {
+              addToOrder({ id, name, price, image, counter });
+            }}
           >
             BUY
           </Button>

@@ -1,7 +1,7 @@
 import './App.css';
 import { useState } from 'react';
 import { Routes, Route } from 'react-router';
-import { Container } from '@mui/material';
+import { Container, Snackbar, Alert } from '@mui/material';
 import { PRODUCTS } from './fakedata/fakeData';
 import Home from './pages/Home';
 import ProductPage from './pages/ProductPage';
@@ -10,21 +10,23 @@ import OrderPage from './pages/OrderPage';
 import Header from './components/Header';
 import { createContext } from 'react';
 
-const OrderContext = createContext(null);
+export const SnackbarContext = createContext({});
 
 function App() {
   const [order, setOrder] = useState([]);
+  const [snack, setSnack] = useState({
+    open: false,
+    severity: 'success',
+    message: '',
+    autoHideDuration: 0,
+  });
 
   const addToOrder = (orderItem) => {
-    let count = 1;
-
     const found = order.find((obj) => {
       return obj.id === orderItem.id;
     });
-
     if (found) {
-      count = found.count + 1;
-
+      let count = found.count + orderItem.counter;
       setOrder(
         order.map((item) => {
           if (item.id !== orderItem.id) return item;
@@ -38,6 +40,12 @@ function App() {
           };
         })
       );
+      setSnack({
+        message: 'You added the same item',
+        severity: 'warning',
+        open: true,
+        autoHideDuration: 3000,
+      });
     } else {
       setOrder([
         ...order,
@@ -46,79 +54,69 @@ function App() {
           name: orderItem.name,
           price: orderItem.price,
           image: orderItem.image,
-          count,
+          count: orderItem.counter,
         },
       ]);
-    }
-  };
-  const addToOrderfromProductPage = (orderItem) => {
-    const found = order.find((obj) => {
-      return obj.id === orderItem.id;
-    });
-    if (found) {
-      let count = found.count + orderItem.count;
-      setOrder(
-        order.map((item) => {
-          if (item.id !== orderItem.id) return item;
-
-          return {
-            id: item.id,
-            name: item.name,
-            price: item.price,
-            image: item.image,
-            count,
-          };
-        })
-      );
-    } else {
-      setOrder([
-        ...order,
-        {
-          id: orderItem.id,
-          name: orderItem.name,
-          price: orderItem.price,
-          image: orderItem.image,
-          count: orderItem.count,
-        },
-      ]);
+      setSnack({
+        message: 'You added an item to your shopping cart',
+        severity: 'success',
+        open: true,
+        autoHideDuration: 1000,
+      });
     }
   };
 
-  const removeFromOrder = (orderItem) => {
-    setOrder(order.filter((item) => item.id !== orderItem));
+  const removeFromOrder = (id) => {
+    setOrder(order.filter((item) => item.id !== id));
   };
 
   const increaseCount = (id) => {
     setOrder((order) => {
-      return order.map((item) => {
-        if (item.id === id) {
-          return {
-            ...item,
-            count: item.count + 1,
-          };
-        }
-        return item;
-      });
+      return order.map((item) =>
+        item.id === id
+          ? {
+              ...item,
+              count: item.count + 1,
+            }
+          : item
+      );
     });
   };
 
   const decreaseCount = (id) => {
     setOrder((order) => {
-      return order.map((item) => {
-        if (item.id === id) {
-          return {
-            ...item,
-            count: item.count - 1,
-          };
-        }
-        return item;
-      });
+      return order.map((item) =>
+        item.id === id
+          ? {
+              ...item,
+              count: item.count - 1,
+            }
+          : item
+      );
+    });
+  };
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setSnack({
+      open: false,
     });
   };
 
   return (
     <Container maxWidth="lg">
       <Header orderLen={order.length} />
+      <SnackbarContext.Provider value={{ snack, setSnack }}>
+        <Snackbar
+          open={snack.open}
+          autoHideDuration={snack.autoHideDuration}
+          onClose={handleClose}
+        >
+          <Alert severity={snack.severity}>{snack.message}</Alert>
+        </Snackbar>
+      </SnackbarContext.Provider>
       <Routes>
         <Route
           path="/"
@@ -129,7 +127,7 @@ function App() {
           element={
             <ProductPage
               products={PRODUCTS}
-              addtoOrder={addToOrderfromProductPage}
+              addtoOrder={addToOrder}
               increaseCount={increaseCount}
               decreaseCount={decreaseCount}
             />

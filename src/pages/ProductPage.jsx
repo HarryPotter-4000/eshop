@@ -8,7 +8,7 @@ function ProductPage(props) {
   const { products, addtoOrder } = props;
   const { id } = useParams();
   const productId = parseInt(id, 10);
-  const [counter, setCounter] = useState(0);
+  const [counter, setCounter] = useState(1);
 
   const found = products.find((obj) => {
     return obj.id === productId;
@@ -70,7 +70,7 @@ function ProductPage(props) {
               >
                 <Button
                   onClick={() => {
-                    setCounter(counter + 1);
+                    setCounter((counter) => counter + 1);
                   }}
                 >
                   <AddIcon sx={{ color: '#90CAF9', size: 'small' }} />
@@ -84,9 +84,9 @@ function ProductPage(props) {
 
                 {
                   <Button
-                    disabled={counter <= 0}
+                    disabled={counter <= 1}
                     onClick={() => {
-                      setCounter(counter - 1);
+                      setCounter((counter) => counter - 1);
                     }}
                   >
                     <RemoveIcon sx={{ color: '#90CAF9', size: 'small' }} />
@@ -102,7 +102,7 @@ function ProductPage(props) {
                     name: found.name,
                     price: found.price,
                     image: found.image,
-                    count: counter,
+                    counter,
                   });
                 }}
               >
@@ -116,12 +116,3 @@ function ProductPage(props) {
   );
 }
 export default ProductPage;
-
-// sx={{
-//   maxWidth: 800,
-//   height: 800,
-//   "&:hover": {
-//     opacity: [0.9, 0.8, 0.7],
-//   },
-//{xs: 0, sm: 600, md: 960, lg: 1280, xl: 1920}
-// }}

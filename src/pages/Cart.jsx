@@ -79,9 +79,9 @@ function Cart({ order, removeFromOrder, increaseCount, decreaseCount }) {
                 <OrderItem
                   {...product}
                   key={product.id}
-                  removeFromOrder={removeFromOrder}
-                  increaseCount={increaseCount}
-                  decreaseCount={decreaseCount}
+                  removeFromOrder={removeFromOrder.bind(null, product.id)}
+                  increaseCount={increaseCount.bind(null, product.id)}
+                  decreaseCount={decreaseCount.bind(null, product.id)}
                 />
               ))}
             </Box>
