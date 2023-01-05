@@ -1,18 +1,15 @@
-import { Avatar } from "@mui/material";
+import { Avatar } from '@mui/material';
 
 function AvatarIcon() {
   return (
     <Avatar
       sx={{
-        backgroundColor: "inherit",
-        color: "#fff",
-        fontWeight: "400",
-        border: "2px solid",
-        borderColor: "transparent",
-        borderRadius: "50%",
-        "&:hover": {
-          borderColor: "white",
-          transition: "all 0.3s ease-out",
+        backgroundColor: 'inherit',
+        color: '#fff',
+        fontWeight: '400',
+        '&:hover': {
+          color: '#e91e63',
+          transition: 'all 0.8s ease-out',
         },
       }}
     >

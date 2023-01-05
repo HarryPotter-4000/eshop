@@ -1,51 +1,31 @@
-import { Container, Stack } from "@mui/system";
-import ListItem from "../components/ListItem";
-import { PRODUCTS } from "../fakedata/fakeData";
+import { Container, Stack } from '@mui/system';
+import ProductList from '../components/ProductList';
 
-function Home() {
+function Home(props) {
+  const { products, addToOrder } = props;
+
   return (
-    <Container
-      width="lg"
-      style={{ padding: "0px" }}
-      sx={{
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "center",
-      }}
-    >
+    <Container width="lg" style={{ padding: '0px' }}>
       <Stack
         sx={{
           width: {
-            lg: "1200px",
-            md: "900px",
-            sm: "600px",
-            xs: "300px",
+            lg: '1200px',
+            md: '900px',
+            sm: '600px',
+            xs: '300px',
           },
-          display: "flex",
+          display: 'flex',
           flexDirection: {
-            sm: "row",
-            xs: "column",
+            sm: 'row',
+            xs: 'column',
           },
-          flexWrap: "wrap",
-          justifyContent: {
-            sm: "center",
-            xs: "flex-start",
-          },
-          alignItems: "flex-start",
+          flexWrap: 'wrap',
+          justifyContent: 'flex-start',
+          alignItems: 'space-around',
+          margin: '0 auto',
         }}
       >
-        {PRODUCTS.map((product) => {
-          return (
-            <ListItem
-              id={product.id}
-              image={product.image}
-              name={product.name}
-              description={product.description}
-              price={product.price}
-              key={product.id}
-            />
-          );
-        })}
+        <ProductList products={products} addToOrder={addToOrder} />
       </Stack>
     </Container>
   );
