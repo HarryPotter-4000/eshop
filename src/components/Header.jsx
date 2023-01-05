@@ -27,6 +27,10 @@ const HEADER_NAVIGATION = [
     url: '/order',
     caption: 'Order',
   },
+  {
+    url: '/signin',
+    caption: 'SignIn',
+  },
 ];
 
 function Header({ orderLen }) {

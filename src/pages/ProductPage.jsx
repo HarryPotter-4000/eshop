@@ -96,7 +96,6 @@ function ProductPage(props) {
               <Button
                 variant="contained"
                 onClick={() => {
-                  console.log(counter);
                   addtoOrder({
                     id: found.id,
                     name: found.name,

@@ -9,6 +9,7 @@ import Cart from './pages/Cart';
 import OrderPage from './pages/OrderPage';
 import Header from './components/Header';
 import { createContext } from 'react';
+import SignIn from './pages/SignIn';
 
 export const SnackbarContext = createContext({});
 
@@ -133,6 +134,7 @@ function App() {
             />
           }
         />
+        <Route path="/signin" element={<SignIn />} />
         <Route path="/order" element={<OrderPage />} />
         <Route
           path="/cart"
