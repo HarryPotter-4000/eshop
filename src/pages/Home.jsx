@@ -22,31 +22,37 @@ function Home(props) {
           Maybe, I want to buy...
         </Button>
       </Box>
-      <Modal isOpened={isModalOpened} onClose={() => setIsModalOpened(false)}>
-        <Typography pb={2} variant="h5" color="text.main">
-          Here you go!
-        </Typography>
-        <img alt={randomProduct.name} width="220px" src={randomProduct.image} />
-        <Box mt="16px">
-          <Button
-            component={Link}
-            to={`/product/${randomProduct.id}`}
-            variant="text"
-            color="primary"
-          >
-            Interesting!
-          </Button>
-          <Button
-            component={'div'}
-            variant="outlined"
-            color="error"
-            onClick={() => setIsModalOpened(false)}
-            ml="24px"
-          >
-            NO,THANKS
-          </Button>
-        </Box>
-      </Modal>
+      {isModalOpened && (
+        <Modal onClose={() => setIsModalOpened(false)}>
+          <Typography pb={2} variant="h5" color="text.main">
+            Here you go!
+          </Typography>
+          <img
+            alt={randomProduct.name}
+            width="220px"
+            src={randomProduct.image}
+          />
+          <Box mt="16px">
+            <Button
+              component={Link}
+              to={`/product/${randomProduct.id}`}
+              variant="text"
+              color="primary"
+            >
+              Interesting!
+            </Button>
+            <Button
+              component={'div'}
+              variant="outlined"
+              color="error"
+              onClick={() => setIsModalOpened(false)}
+              ml="24px"
+            >
+              NO,THANKS
+            </Button>
+          </Box>
+        </Modal>
+      )}
       <Stack
         sx={{
           width: {
