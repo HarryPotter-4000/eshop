@@ -1,11 +1,58 @@
-import { Container, Stack } from '@mui/system';
+import { Box, Button, Container, Typography, Stack } from '@mui/material';
+import { useState } from 'react';
 import ProductList from '../components/ProductList';
+import CasinoIcon from '@mui/icons-material/Casino';
+import Modal from '../components/Modal';
+import { Link } from 'react-router-dom';
 
 function Home(props) {
   const { products, addToOrder } = props;
+  const [isModalOpened, setIsModalOpened] = useState(false);
+  var randomProduct = products[Math.floor(Math.random() * products.length)];
+  console.log(randomProduct);
 
   return (
     <Container width="lg" style={{ padding: '0px' }}>
+      <Box sx={{ marginLeft: '24px' }}>
+        <Button
+          size="large"
+          startIcon={<CasinoIcon />}
+          onClick={() => setIsModalOpened(true)}
+        >
+          Maybe, I want to buy...
+        </Button>
+      </Box>
+      {isModalOpened && (
+        <Modal onClose={() => setIsModalOpened(false)}>
+          <Typography pb={2} variant="h5" color="text.main">
+            Here you go!
+          </Typography>
+          <img
+            alt={randomProduct.name}
+            width="220px"
+            src={randomProduct.image}
+          />
+          <Box mt="16px">
+            <Button
+              component={Link}
+              to={`/product/${randomProduct.id}`}
+              variant="text"
+              color="primary"
+            >
+              Interesting!
+            </Button>
+            <Button
+              component={'div'}
+              variant="outlined"
+              color="error"
+              onClick={() => setIsModalOpened(false)}
+              ml="24px"
+            >
+              NO,THANKS
+            </Button>
+          </Box>
+        </Modal>
+      )}
       <Stack
         sx={{
           width: {
