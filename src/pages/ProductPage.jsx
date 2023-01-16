@@ -1,22 +1,27 @@
 import { useParams } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, ButtonGroup, Box, Container, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import { getOne } from '../utils/api';
 
 function ProductPage(props) {
-  const { products, addtoOrder } = props;
+  const { addtoOrder } = props;
+  const [product, setProduct] = useState([]);
   const { id } = useParams();
-  const productId = parseInt(id, 10);
   const [counter, setCounter] = useState(1);
 
-  const found = products.find((obj) => {
-    return obj.id === productId;
-  });
+  useEffect(() => {
+    async function getAllProducts() {
+      const foundProduct = await getOne('products', id);
+      setProduct(foundProduct);
+    }
+    getAllProducts();
+  }, []);
 
   return (
     <>
-      {found && (
+      {product && (
         <Container
           sx={{
             width: {
@@ -36,7 +41,7 @@ function ProductPage(props) {
           }}
         >
           <Box mr={8}>
-            <img src={found.image} alt={found.name} width="300" />
+            <img src={product.image} alt={product.name} width="300" />
           </Box>
           <Box
             mb={3}
@@ -46,10 +51,10 @@ function ProductPage(props) {
             }}
           >
             <Typography variant="h2" my={2} color="text.main">
-              {found.name}
+              {product.name}
             </Typography>
             <Typography variant="subtitle1" mb={2} color="text.main">
-              {found.description}
+              {product.description}
             </Typography>
             <Box
               mb={4}
@@ -60,7 +65,7 @@ function ProductPage(props) {
               }}
             >
               <Typography variant="h4" color="price.main">
-                {found.price}$
+                {product.price}$
               </Typography>
               <ButtonGroup
                 size="small"
@@ -97,10 +102,10 @@ function ProductPage(props) {
                 variant="contained"
                 onClick={() => {
                   addtoOrder({
-                    id: found.id,
-                    name: found.name,
-                    price: found.price,
-                    image: found.image,
+                    id: id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
                     counter,
                   });
                 }}

@@ -1,15 +1,26 @@
 import { Box, Button, Container, Typography, Stack } from '@mui/material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ProductList from '../components/ProductList';
 import CasinoIcon from '@mui/icons-material/Casino';
 import Modal from '../components/Modal';
 import { Link } from 'react-router-dom';
+import { getAll } from '../utils/api';
 
 function Home(props) {
-  const { products, addToOrder } = props;
+  const { addToOrder } = props;
+  const [products, setProducts] = useState([]);
+
   const [isModalOpened, setIsModalOpened] = useState(false);
-  var randomProduct = products[Math.floor(Math.random() * products.length)];
-  console.log(randomProduct);
+  const randomProduct = products[Math.floor(Math.random() * products.length)];
+
+  useEffect(() => {
+    async function getAllProducts() {
+      const allProducts = await getAll('products');
+      setProducts(allProducts);
+    }
+    getAllProducts();
+  }, []);
+  console.log(products); //Why is the data updated 4 times in the console
 
   return (
     <Container width="lg" style={{ padding: '0px' }}>

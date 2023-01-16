@@ -2,7 +2,6 @@ import './App.css';
 import { useState } from 'react';
 import { Routes, Route } from 'react-router';
 import { Container, Snackbar, Alert } from '@mui/material';
-import { PRODUCTS } from './fakedata/fakeData';
 import Home from './pages/Home';
 import ProductPage from './pages/ProductPage';
 import Cart from './pages/Cart';
@@ -119,15 +118,11 @@ function App() {
         </Snackbar>
       </SnackbarContext.Provider>
       <Routes>
-        <Route
-          path="/"
-          element={<Home products={PRODUCTS} addToOrder={addToOrder} />}
-        />
+        <Route path="/" element={<Home addToOrder={addToOrder} />} />
         <Route
           path="/product/:id"
           element={
             <ProductPage
-              products={PRODUCTS}
               addtoOrder={addToOrder}
               increaseCount={increaseCount}
               decreaseCount={decreaseCount}
