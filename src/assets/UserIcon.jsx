@@ -1,8 +1,8 @@
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import FaceIcon from '@mui/icons-material/Face';
 
 function UserIcon() {
   return (
-    <AccountCircleIcon
+    <FaceIcon
       fontSize="large"
       sx={{
         backgroundColor: 'inherit',
@@ -13,7 +13,7 @@ function UserIcon() {
           transition: 'all 0.8s ease-out',
         },
       }}
-    ></AccountCircleIcon>
+    ></FaceIcon>
   );
 }
 export default UserIcon;

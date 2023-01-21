@@ -9,7 +9,8 @@ import Cart from './pages/Cart';
 import OrderPage from './pages/OrderPage';
 import Header from './components/Header';
 import { createContext } from 'react';
-import SignIn from './pages/SignIn';
+import LoginPage from './pages/LoginPage';
+import { AuthProvider } from './utils/authContext';
 
 export const SnackbarContext = createContext({});
 
@@ -108,46 +109,48 @@ function App() {
 
   return (
     <Container maxWidth="lg">
-      <Header orderLen={order.length} />
-      <SnackbarContext.Provider value={{ snack, setSnack }}>
-        <Snackbar
-          open={snack.open}
-          autoHideDuration={snack.autoHideDuration}
-          onClose={handleClose}
-        >
-          <Alert severity={snack.severity}>{snack.message}</Alert>
-        </Snackbar>
-      </SnackbarContext.Provider>
-      <Routes>
-        <Route
-          path="/"
-          element={<Home products={PRODUCTS} addToOrder={addToOrder} />}
-        />
-        <Route
-          path="/product/:id"
-          element={
-            <ProductPage
-              products={PRODUCTS}
-              addtoOrder={addToOrder}
-              increaseCount={increaseCount}
-              decreaseCount={decreaseCount}
-            />
-          }
-        />
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/order" element={<OrderPage />} />
-        <Route
-          path="/cart"
-          element={
-            <Cart
-              order={order}
-              removeFromOrder={removeFromOrder}
-              increaseCount={increaseCount}
-              decreaseCount={decreaseCount}
-            />
-          }
-        />
-      </Routes>
+      <AuthProvider>
+        <Header orderLen={order.length} />
+        <SnackbarContext.Provider value={{ snack, setSnack }}>
+          <Snackbar
+            open={snack.open}
+            autoHideDuration={snack.autoHideDuration}
+            onClose={handleClose}
+          >
+            <Alert severity={snack.severity}>{snack.message}</Alert>
+          </Snackbar>
+        </SnackbarContext.Provider>
+        <Routes>
+          <Route
+            path="/"
+            element={<Home products={PRODUCTS} addToOrder={addToOrder} />}
+          />
+          <Route
+            path="/product/:id"
+            element={
+              <ProductPage
+                products={PRODUCTS}
+                addtoOrder={addToOrder}
+                increaseCount={increaseCount}
+                decreaseCount={decreaseCount}
+              />
+            }
+          />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/order" element={<OrderPage />} />
+          <Route
+            path="/cart"
+            element={
+              <Cart
+                order={order}
+                removeFromOrder={removeFromOrder}
+                increaseCount={increaseCount}
+                decreaseCount={decreaseCount}
+              />
+            }
+          />
+        </Routes>
+      </AuthProvider>
     </Container>
   );
 }

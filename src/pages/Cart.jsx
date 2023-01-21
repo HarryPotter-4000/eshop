@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
+import { useContext } from 'react';
 import {
   Box,
   Button,
@@ -9,8 +11,8 @@ import {
   Stack,
 } from '@mui/material';
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import OrderItem from '../components/OrderItem';
+import AuthContext from '../utils/authContext';
 
 function Cart({ order, removeFromOrder, increaseCount, decreaseCount }) {
   const [total, setTotal] = useState({
@@ -20,6 +22,7 @@ function Cart({ order, removeFromOrder, increaseCount, decreaseCount }) {
     ),
     count: order.reduce((previous, current) => previous + current.count, 0),
   });
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     setTotal({
@@ -137,7 +140,11 @@ function Cart({ order, removeFromOrder, increaseCount, decreaseCount }) {
                 </Typography>
               </Box>
             </Box>
-            <Button component={Link} to={'/order'} variant="contained">
+            <Button
+              component={Link}
+              to={user ? '/order' : '/login'}
+              variant="contained"
+            >
               GO TO CHECKOUT
             </Button>
           </Stack>

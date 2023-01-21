@@ -13,9 +13,7 @@ function CartIcon() {
           transition: 'all 0.8s ease-out',
         },
       }}
-    >
-      N
-    </ShoppingCartIcon>
+    ></ShoppingCartIcon>
   );
 }
 export default CartIcon;

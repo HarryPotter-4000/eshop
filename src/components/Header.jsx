@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Logo from '../assets/image/logo.png';
+import { useState } from 'react';
 import {
   AppBar,
   Badge,
@@ -8,9 +9,6 @@ import {
   Toolbar,
   Stack,
   IconButton,
-  List,
-  ListItem,
-  ListItemButton,
   Container,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -18,49 +16,26 @@ import { Link } from 'react-router-dom';
 import CartIcon from '../assets/CartIcon';
 import UserMenu from './UserMenu';
 
-const HEADER_NAVIGATION = [
-  {
-    url: '/',
-    caption: 'Home',
-  },
-  {
-    url: '/order',
-    caption: 'Order',
-  },
-  {
-    url: '/signin',
-    caption: 'SignIn',
-  },
-];
-
 function Header({ orderLen }) {
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
   const drawer = (
-    <Box onClick={handleDrawerToggle}>
-      <List space={2}>
-        {HEADER_NAVIGATION.map(({ url, caption }) => (
-          <ListItem key={url} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center' }}>
-              <Link
-                style={{
-                  textDecoration: 'none',
-                  color: '#fff',
-                  fontSize: '20px',
-                  fontWeight: '600',
-                }}
-                to={url}
-              >
-                {caption}
-              </Link>
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+    <Box onClick={handleDrawerToggle} m="16px">
+      <Link
+        style={{
+          textDecoration: 'none',
+          color: '#fff',
+          fontSize: '20px',
+          fontWeight: '600',
+        }}
+        to="/"
+      >
+        Home
+      </Link>
     </Box>
   );
 
@@ -87,29 +62,25 @@ function Header({ orderLen }) {
           </Box>
           <Stack direction="row" spacing={2} alignItems="center">
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-              {HEADER_NAVIGATION.map(({ url, caption }) => (
-                <Link
-                  key={url}
-                  style={{
-                    textDecoration: 'none',
-                    color: '#fff',
-                    paddingRight: '24px',
-                    fontSize: '20px',
-                    fontWeight: '600',
-                    '&:hover': {
-                      color: '#FF1E56',
-                      transition: 'all 0.3s ease-out',
-                    },
-                    '&:active': { color: '#FF1E56' },
-                    '&:focus': {
-                      color: '#FF1E56',
-                    },
-                  }}
-                  to={url}
-                >
-                  {caption}
-                </Link>
-              ))}
+              <Link
+                style={{
+                  textDecoration: 'none',
+                  color: '#fff',
+                  fontSize: '20px',
+                  fontWeight: '600',
+                  '&:hover': {
+                    color: '#FF1E56',
+                    transition: 'all 0.3s ease-out',
+                  },
+                  '&:active': { color: '#FF1E56' },
+                  '&:focus': {
+                    color: '#FF1E56',
+                  },
+                }}
+                to="./"
+              >
+                Home
+              </Link>
             </Box>
             <IconButton
               component={Link}

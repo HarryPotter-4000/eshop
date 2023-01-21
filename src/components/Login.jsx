@@ -8,9 +8,16 @@ import {
   Container,
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../utils/firebase';
+import AuthContext from '../utils/authContext';
 
 export default function SignIn() {
+  const { user } = useContext(AuthContext);
+  let navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -18,9 +25,15 @@ export default function SignIn() {
     reset,
   } = useForm({ mode: 'onChange' });
 
-  const onSubmit = (data) => {
-    data.email = data.email.trim();
-    console.log(JSON.stringify(data, null));
+  const login = async (data) => {
+    let { email, password } = data;
+    email = email.trim();
+    try {
+      const user = await signInWithEmailAndPassword(auth, email, password);
+      navigate(-1);
+    } catch (error) {
+      console.log(error.message);
+    }
     reset();
   };
 
@@ -42,7 +55,7 @@ export default function SignIn() {
         </Typography>
         <Box
           component="form"
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(login)}
           noValidate
           sx={{
             mt: 1,
