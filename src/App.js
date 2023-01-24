@@ -2,7 +2,6 @@ import './App.css';
 import { useState, useContext } from 'react';
 import { Routes, Route } from 'react-router';
 import { Container } from '@mui/material';
-import { PRODUCTS } from './fakedata/fakeData';
 import Home from './pages/Home';
 import ProductPage from './pages/ProductPage';
 import Cart from './pages/Cart';

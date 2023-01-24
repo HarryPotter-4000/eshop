@@ -25,17 +25,23 @@ const postUsers = async (user) => {
 };
 
 const getOne = async (resource, id) => {
-  const products = await fetch(
+  const product = await fetch(
     `https://eshop-9ddf6-default-rtdb.firebaseio.com/${resource}/${id}.json`
   );
-  return await products.json();
+  return await product.json();
 };
 
 const getAll = async (resource) => {
-  const products = await fetch(
+  const response = await fetch(
     `https://eshop-9ddf6-default-rtdb.firebaseio.com/${resource}.json`
   );
-  return await products.json();
+  const items = await response.json();
+  return Object.entries(items).map(([id, item]) => {
+    return {
+      id,
+      ...item,
+    };
+  });
 };
 
 const api = async (resource, options = { method: 'GET', body: {} }) => {
@@ -56,5 +62,4 @@ const api = async (resource, options = { method: 'GET', body: {} }) => {
 // get one product : getOne('products', id)
 // add product : postProducts(product)
 
-// export default api;
-export { postProducts };
+export { getOne, getAll, postProducts };
