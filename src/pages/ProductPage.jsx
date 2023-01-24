@@ -20,6 +20,7 @@ function ProductPage(props) {
   }, []);
 
   return (
+    <>
       {product && (
         <Container
           sx={{
@@ -115,6 +116,7 @@ function ProductPage(props) {
           </Box>
         </Container>
       )}
+    </>
   );
 }
 export default ProductPage;
