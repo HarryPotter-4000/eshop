@@ -1,18 +1,46 @@
 import { Box, Button, Container, Typography, Stack } from '@mui/material';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import ProductList from '../components/ProductList';
+import AddBusinessIcon from '@mui/icons-material/AddBusiness';
 import CasinoIcon from '@mui/icons-material/Casino';
 import Modal from '../components/Modal';
 import { Link } from 'react-router-dom';
+import AuthContext from '../utils/authContext';
+import AddProductForm from '../components/AddProductForm';
 
 function Home(props) {
   const { products, addToOrder } = props;
   const [isModalOpened, setIsModalOpened] = useState(false);
+  const [isAddModalOpened, setIsAddModalOpened] = useState(false);
   var randomProduct = products[Math.floor(Math.random() * products.length)];
-  console.log(randomProduct);
+
+  const { user } = useContext(AuthContext);
 
   return (
     <Container width="lg" style={{ padding: '0px' }}>
+      {user && user?.email === 'admin@admin.com' && (
+        <Box sx={{ marginLeft: '24px' }}>
+          <Button
+            size="large"
+            color="price"
+            startIcon={<AddBusinessIcon />}
+            onClick={() => setIsAddModalOpened(true)}
+          >
+            Add new product
+          </Button>
+        </Box>
+      )}
+      {isAddModalOpened && (
+        <Modal onClose={() => setIsAddModalOpened(false)}>
+          <Typography pb={2} variant="h5" color="text.main">
+            Add new product
+          </Typography>
+          <Box>
+            <AddProductForm setIsAddModalOpened={setIsAddModalOpened} />
+          </Box>
+        </Modal>
+      )}
+
       <Box sx={{ marginLeft: '24px' }}>
         <Button
           size="large"

@@ -1,27 +1,22 @@
 import './App.css';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Routes, Route } from 'react-router';
-import { Container, Snackbar, Alert } from '@mui/material';
+import { Container } from '@mui/material';
 import { PRODUCTS } from './fakedata/fakeData';
 import Home from './pages/Home';
 import ProductPage from './pages/ProductPage';
 import Cart from './pages/Cart';
 import OrderPage from './pages/OrderPage';
 import Header from './components/Header';
-import { createContext } from 'react';
 import LoginPage from './pages/LoginPage';
 import { AuthProvider } from './utils/authContext';
 
-export const SnackbarContext = createContext({});
+import SnackbarContent from './utils/snackContext';
 
 function App() {
   const [order, setOrder] = useState([]);
-  const [snack, setSnack] = useState({
-    open: false,
-    severity: 'success',
-    message: '',
-    autoHideDuration: 0,
-  });
+
+  const { setSnack } = useContext(SnackbarContent);
 
   const addToOrder = (orderItem) => {
     const found = order.find((obj) => {
@@ -97,39 +92,17 @@ function App() {
       );
     });
   };
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setSnack({
-      open: false,
-    });
-  };
 
   return (
     <Container maxWidth="lg">
       <AuthProvider>
         <Header orderLen={order.length} />
-        <SnackbarContext.Provider value={{ snack, setSnack }}>
-          <Snackbar
-            open={snack.open}
-            autoHideDuration={snack.autoHideDuration}
-            onClose={handleClose}
-          >
-            <Alert severity={snack.severity}>{snack.message}</Alert>
-          </Snackbar>
-        </SnackbarContext.Provider>
         <Routes>
-          <Route
-            path="/"
-            element={<Home products={PRODUCTS} addToOrder={addToOrder} />}
-          />
+          <Route path="/" element={<Home addToOrder={addToOrder} />} />
           <Route
             path="/product/:id"
             element={
               <ProductPage
-                products={PRODUCTS}
                 addtoOrder={addToOrder}
                 increaseCount={increaseCount}
                 decreaseCount={decreaseCount}

@@ -1,6 +1,5 @@
-import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { useContext } from 'react';
+import { useState, useContext } from 'react';
 import { Box, Menu, MenuItem, IconButton } from '@mui/material';
 import AvatarIcon from '../assets/AvatarIcon';
 import UserIcon from '../assets/UserIcon';
@@ -9,7 +8,7 @@ import { signOut } from 'firebase/auth';
 import AuthContext from '../utils/authContext';
 
 function UserMenu() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const { user } = useContext(AuthContext);
 
   const handleMenu = (event) => {
@@ -75,6 +74,9 @@ function UserMenu() {
               transformOrigin={{ horizontal: 'right', vertical: 'top' }}
               anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
+              {user && (
+                <MenuItem sx={{ color: 'text.main' }}>{user.email}</MenuItem>
+              )}
               <MenuItem sx={{ color: 'price.main' }} onClick={logout}>
                 Sign Out
               </MenuItem>
@@ -95,7 +97,7 @@ function UserMenu() {
             <Menu
               anchorEl={anchorEl}
               id="account-menu"
-              open={Boolean(anchorEl)}
+              open={!!anchorEl}
               onClose={handleClose}
               onClick={handleClose}
               PaperProps={{
@@ -131,7 +133,7 @@ function UserMenu() {
                 sx={{ color: 'price.main' }}
                 onClick={handleClose}
                 component={Link}
-                to={`/login`}
+                to={'/login'}
               >
                 Sign In
               </MenuItem>

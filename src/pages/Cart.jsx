@@ -140,11 +140,7 @@ function Cart({ order, removeFromOrder, increaseCount, decreaseCount }) {
                 </Typography>
               </Box>
             </Box>
-            <Button
-              component={Link}
-              to={user ? '/order' : '/login'}
-              variant="contained"
-            >
+            <Button component={Link} to={'/order'} variant="contained">
               GO TO CHECKOUT
             </Button>
           </Stack>

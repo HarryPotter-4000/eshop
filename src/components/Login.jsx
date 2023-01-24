@@ -29,7 +29,7 @@ export default function SignIn() {
     let { email, password } = data;
     email = email.trim();
     try {
-      const user = await signInWithEmailAndPassword(auth, email, password);
+      await signInWithEmailAndPassword(auth, email, password);
       navigate(-1);
     } catch (error) {
       console.log(error.message);
