@@ -15,23 +15,21 @@ import OrderItem from '../components/OrderItem';
 import AuthContext from '../utils/authContext';
 
 function Cart({ order, removeFromOrder, increaseCount, decreaseCount }) {
-  const [total, setTotal] = useState({
-    price: order.reduce(
-      (previous, current) => previous + current.price * current.count,
-      0
-    ),
-    count: order.reduce((previous, current) => previous + current.count, 0),
-  });
-  const { user } = useContext(AuthContext);
-
-  useEffect(() => {
-    setTotal({
+  const calcTotal = () => {
+    return {
       price: order.reduce(
         (previous, current) => previous + current.price * current.count,
         0
       ),
       count: order.reduce((previous, current) => previous + current.count, 0),
-    });
+    };
+  };
+  const [total, setTotal] = useState(() => calcTotal());
+
+  const { user } = useContext(AuthContext);
+
+  useEffect(() => {
+    setTotal(() => calcTotal(order));
   }, [order]);
 
   return (
