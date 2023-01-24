@@ -77,7 +77,7 @@ function Header({ orderLen }) {
                     color: '#FF1E56',
                   },
                 }}
-                to="./"
+                to="/"
               >
                 Home
               </Link>
