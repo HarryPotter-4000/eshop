@@ -14,11 +14,10 @@ function Home(props) {
   const randomProduct = products[Math.floor(Math.random() * products.length)];
 
   useEffect(() => {
-    async function getAllProducts() {
+    (async () => {
       const allProducts = await getAll('products');
       setProducts(allProducts);
-    }
-    getAllProducts();
+    })();
   }, []);
   console.log(products); //Why is the data updated 4 times in the console
 
