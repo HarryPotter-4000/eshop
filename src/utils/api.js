@@ -1,35 +1,53 @@
-import { ref, set, push } from "firebase/database";
-import { database as db} from './firebase';
+import { ref, set, push } from 'firebase/database';
+import { database as db } from './firebase';
 
 const productsRef = ref(db, 'products');
 const usersRef = ref(db, 'users');
 
 const postProducts = async (product) => {
   return set(push(productsRef), product)
-    .then(() => {return '201 Created'})
-    .catch((error) => {return error});
-}
+    .then(() => {
+      return '201 Created';
+    })
+    .catch((error) => {
+      return error;
+    });
+};
 
 const postUsers = async (user) => {
   return set(push(usersRef), user)
-    .then(() => {return '201 Created'})
-    .catch((error) => {return error});
-}
+    .then(() => {
+      return '201 Created';
+    })
+    .catch((error) => {
+      return error;
+    });
+};
 
 const getOne = async (resource, id) => {
-  const products = await fetch(`https://eshop-9ddf6-default-rtdb.firebaseio.com/${resource}/${id}.json`);
-  return await products.json();
-}
+  const product = await fetch(
+    `https://eshop-9ddf6-default-rtdb.firebaseio.com/${resource}/${id}.json`
+  );
+  return await product.json();
+};
 
 const getAll = async (resource) => {
-  const products = await fetch(`https://eshop-9ddf6-default-rtdb.firebaseio.com/${resource}.json`);
-  return await products.json();
-}
+  const response = await fetch(
+    `https://eshop-9ddf6-default-rtdb.firebaseio.com/${resource}.json`
+  );
+  const items = await response.json();
+  return Object.entries(items).map(([id, item]) => {
+    return {
+      id,
+      ...item,
+    };
+  });
+};
 
-const api = async (resource, options = {method: 'GET', body: {}}) => {
-  if(resource.startsWith('products')){
-    if(resource === 'products'){
-      if(options.method === 'POST') {
+const api = async (resource, options = { method: 'GET', body: {} }) => {
+  if (resource.startsWith('products')) {
+    if (resource === 'products') {
+      if (options.method === 'POST') {
         return postProducts(options.body);
       }
       return getAll('products');
@@ -38,11 +56,10 @@ const api = async (resource, options = {method: 'GET', body: {}}) => {
     return getOne('products', id);
   }
   return "we don't have such resource";
-}
+};
 
 // get all products : getAll('products')
 // get one product : getOne('products', id)
 // add product : postProducts(product)
 
-export default api;
-
+export { getOne, getAll, postProducts };
