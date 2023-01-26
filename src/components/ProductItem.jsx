@@ -22,7 +22,7 @@ export default function ProductItem(props) {
         },
         height: 360,
         boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
-        margin: '16px',
+        margin: '24px',
       }}
     >
       <CardMedia

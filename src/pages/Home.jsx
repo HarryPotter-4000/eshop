@@ -1,4 +1,11 @@
-import { Box, Button, Container, Typography, Stack } from '@mui/material';
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Container,
+  Typography,
+  Stack,
+} from '@mui/material';
 import { useState, useEffect, useContext } from 'react';
 import ProductList from '../components/ProductList';
 import AddBusinessIcon from '@mui/icons-material/AddBusiness';
@@ -8,24 +15,59 @@ import { Link } from 'react-router-dom';
 import AuthContext from '../utils/authContext';
 import AddProductForm from '../components/AddProductForm';
 import { getAll } from '../utils/api';
+import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import BasicSelect from '../components/BasicSelect';
+import FiltersTag from '../components/FiltersTag';
 
 function Home(props) {
   const { addToOrder } = props;
   const [products, setProducts] = useState([]);
-
+  const [filters, setfilters] = useState('');
+  const [filter, setfilter] = useState('');
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [isAddModalOpened, setIsAddModalOpened] = useState(false);
   var randomProduct = products[Math.floor(Math.random() * products.length)];
 
   const { user } = useContext(AuthContext);
 
+  const [basicProducts, setBasicProducts] = useState([]);
+
   useEffect(() => {
     (async () => {
       const allProducts = await getAll('products');
-      setProducts(allProducts);
+      setBasicProducts(allProducts);
+      const names = allProducts.map((product) => {
+        return product.name;
+      });
+      setfilters(names);
     })();
+    console.log('-------------1');
   }, []);
-  console.log(products); //Why is the data updated 4 times in the console
+
+  useEffect(() => {
+    console.log('-------------2');
+    setProducts(basicProducts);
+  }, [basicProducts]);
+
+  useEffect(() => {
+    console.log('-------------3');
+    !!filter &&
+      setProducts(basicProducts.filter((product) => product.name === filter));
+  }, [filter]);
+
+  //console.log(products); //Why is the data updated 4 times in the console
+
+  const sortByName = () => {
+    setProducts([...products].sort((a, b) => a.name.localeCompare(b.name)));
+  };
+  const sortByAscending = () => {
+    setProducts([...products].sort((a, b) => a.price - b.price));
+  };
+  const sortByDescending = () => {
+    setProducts([...products].sort((a, b) => b.price - a.price));
+  };
 
   return (
     <Container width="lg" style={{ padding: '0px' }}>
@@ -47,7 +89,11 @@ function Home(props) {
             Add new product
           </Typography>
           <Box>
-            <AddProductForm setIsAddModalOpened={setIsAddModalOpened} />
+            <AddProductForm
+              setIsAddModalOpened={setIsAddModalOpened}
+              setBasicProducts={setBasicProducts}
+              setfilters={setfilters}
+            />
           </Box>
         </Modal>
       )}
@@ -92,6 +138,62 @@ function Home(props) {
           </Box>
         </Modal>
       )}
+
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          margin: '24px',
+        }}
+      >
+        <ButtonGroup
+          variant="contained"
+          aria-label="outlined primary button group"
+        >
+          <Button onClick={sortByName}>
+            <SortByAlphaIcon />
+          </Button>
+          <Button onClick={sortByAscending}>
+            <ArrowUpwardIcon />
+          </Button>
+          <Button onClick={sortByDescending}>
+            <ArrowDownwardIcon />
+          </Button>
+        </ButtonGroup>
+      </Box>
+      {!!filters && (
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-start',
+            margin: '24px',
+          }}
+        >
+          <FiltersTag filters={filters} />
+        </Box>
+      )}
+
+      {/* <Box sx={{ minWidth: 120 }}>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Name</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={filter}
+              label="Name"
+              onChange={handleChange}
+            >
+              {selectOptions &&
+                selectOptions.map((name) => (
+                  <MenuItem key={name} value={name}>
+                    {name}
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
+        </Box> */}
+      <BasicSelect filters={filters} setfilter={setfilter} />
+
       <Stack
         sx={{
           width: {

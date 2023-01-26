@@ -3,8 +3,13 @@ import { TextField, Box, Button } from '@mui/material';
 import { useState, useContext } from 'react';
 import { postProducts } from '../utils/api';
 import SnackbarContext from '../utils/snackContext';
+import { getAll } from '../utils/api';
 
-export default function AddProductForm({ setIsAddModalOpened }) {
+export default function AddProductForm({
+  setIsAddModalOpened,
+  setBasicProducts,
+  setfilters,
+}) {
   const [product, setProduct] = useState({
     name: '',
     description: '',
@@ -19,9 +24,8 @@ export default function AddProductForm({ setIsAddModalOpened }) {
   const handleChange = (event) => {
     setProduct({ ...product, [event.target.name]: event.target.value });
   };
-  const handleSubmit = (product) => {
-    postProducts(product);
-    console.log(product);
+  const handleSubmit = async (product) => {
+    await postProducts(product);
     setIsAddModalOpened(false);
     setSnack({
       message: 'You added new product',
@@ -29,6 +33,12 @@ export default function AddProductForm({ setIsAddModalOpened }) {
       open: true,
       autoHideDuration: 2000,
     });
+    const allProducts = await getAll('products');
+    setBasicProducts(allProducts);
+    const names = allProducts.map((product) => {
+      return product.name;
+    });
+    setfilters(names);
   };
 
   return (
