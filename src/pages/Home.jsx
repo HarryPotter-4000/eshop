@@ -19,45 +19,32 @@ import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import BasicSelect from '../components/BasicSelect';
-import FiltersTag from '../components/FiltersTag';
 
 function Home(props) {
   const { addToOrder } = props;
   const [products, setProducts] = useState([]);
-  const [filters, setfilters] = useState('');
-  const [filter, setfilter] = useState('');
+  const [filters, setFilters] = useState('');
+  const [filter, setFilter] = useState('');
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [isAddModalOpened, setIsAddModalOpened] = useState(false);
-  var randomProduct = products[Math.floor(Math.random() * products.length)];
+
+  const randomProduct = products[Math.floor(Math.random() * products.length)];
 
   const { user } = useContext(AuthContext);
-
-  const [basicProducts, setBasicProducts] = useState([]);
 
   useEffect(() => {
     (async () => {
       const allProducts = await getAll('products');
-      setBasicProducts(allProducts);
+      setProducts(allProducts);
       const names = allProducts.map((product) => {
         return product.name;
       });
-      setfilters(names);
+      setFilters(names);
     })();
     console.log('-------------1');
   }, []);
 
-  useEffect(() => {
-    console.log('-------------2');
-    setProducts(basicProducts);
-  }, [basicProducts]);
-
-  useEffect(() => {
-    console.log('-------------3');
-    !!filter &&
-      setProducts(basicProducts.filter((product) => product.name === filter));
-  }, [filter]);
-
-  //console.log(products); //Why is the data updated 4 times in the console
+  console.log(products); //Why is the data updated 4 times in the console
 
   const sortByName = () => {
     setProducts([...products].sort((a, b) => a.name.localeCompare(b.name)));
@@ -91,8 +78,8 @@ function Home(props) {
           <Box>
             <AddProductForm
               setIsAddModalOpened={setIsAddModalOpened}
-              setBasicProducts={setBasicProducts}
-              setfilters={setfilters}
+              setProducts={setProducts}
+              setFilters={setFilters}
             />
           </Box>
         </Modal>
@@ -138,61 +125,36 @@ function Home(props) {
           </Box>
         </Modal>
       )}
-
       <Box
         sx={{
           display: 'flex',
-          justifyContent: 'flex-end',
-          margin: '24px',
+          justifyContent: 'space-between',
+          margin: '16px 24px ',
         }}
       >
-        <ButtonGroup
-          variant="contained"
-          aria-label="outlined primary button group"
-        >
-          <Button onClick={sortByName}>
-            <SortByAlphaIcon />
-          </Button>
-          <Button onClick={sortByAscending}>
-            <ArrowUpwardIcon />
-          </Button>
-          <Button onClick={sortByDescending}>
-            <ArrowDownwardIcon />
-          </Button>
-        </ButtonGroup>
-      </Box>
-      {!!filters && (
+        <BasicSelect filters={filters} filter={filter} setFilter={setFilter} />
         <Box
           sx={{
             display: 'flex',
-            justifyContent: 'flex-start',
-            margin: '24px',
+            justifyContent: 'flex-end',
           }}
         >
-          <FiltersTag filters={filters} />
+          <ButtonGroup
+            variant="contained"
+            aria-label="outlined primary button group"
+          >
+            <Button onClick={sortByName}>
+              <SortByAlphaIcon />
+            </Button>
+            <Button onClick={sortByAscending}>
+              <ArrowUpwardIcon />
+            </Button>
+            <Button onClick={sortByDescending}>
+              <ArrowDownwardIcon />
+            </Button>
+          </ButtonGroup>
         </Box>
-      )}
-
-      {/* <Box sx={{ minWidth: 120 }}>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Name</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={filter}
-              label="Name"
-              onChange={handleChange}
-            >
-              {selectOptions &&
-                selectOptions.map((name) => (
-                  <MenuItem key={name} value={name}>
-                    {name}
-                  </MenuItem>
-                ))}
-            </Select>
-          </FormControl>
-        </Box> */}
-      <BasicSelect filters={filters} setfilter={setfilter} />
+      </Box>
 
       <Stack
         sx={{
@@ -213,7 +175,11 @@ function Home(props) {
           margin: '0 auto',
         }}
       >
-        <ProductList products={products} addToOrder={addToOrder} />
+        <ProductList
+          filter={filter}
+          products={products}
+          addToOrder={addToOrder}
+        />
       </Stack>
     </Container>
   );

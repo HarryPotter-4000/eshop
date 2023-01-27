@@ -1,25 +1,25 @@
 import { Box, InputLabel, MenuItem, FormControl, Select } from '@mui/material';
-import { useEffect } from 'react';
-import { useState } from 'react';
 
-export default function BasicSelect({ filters, setfilter }) {
-  const [chosenFilter, setChosenFilter] = useState('');
-
+export default function BasicSelect({ filter, filters, setFilter }) {
   const handleChange = (event) => {
-    setChosenFilter(event.target.value);
+    setFilter(event.target.value);
   };
-  useEffect(() => {
-    !!chosenFilter && setfilter(chosenFilter);
-  }, [chosenFilter]);
 
   return (
-    <Box sx={{ minWidth: 120 }}>
-      <FormControl fullWidth>
+    <Box
+      sx={{
+        width: {
+          md: '300px',
+          xs: '200px',
+        },
+      }}
+    >
+      <FormControl fullWidth size="small">
         <InputLabel id="demo-simple-select-label">Name</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={chosenFilter}
+          value={filter}
           label="Name"
           onChange={handleChange}
         >

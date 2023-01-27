@@ -7,8 +7,8 @@ import { getAll } from '../utils/api';
 
 export default function AddProductForm({
   setIsAddModalOpened,
-  setBasicProducts,
-  setfilters,
+  setProducts,
+  setFilters,
 }) {
   const [product, setProduct] = useState({
     name: '',
@@ -34,11 +34,11 @@ export default function AddProductForm({
       autoHideDuration: 2000,
     });
     const allProducts = await getAll('products');
-    setBasicProducts(allProducts);
+    setProducts(allProducts);
     const names = allProducts.map((product) => {
       return product.name;
     });
-    setfilters(names);
+    setFilters(names);
   };
 
   return (
