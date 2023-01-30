@@ -1,52 +1,41 @@
 import * as React from 'react';
 import { TextField, Box, Button } from '@mui/material';
-import { useState, useContext } from 'react';
+import { useContext, useRef } from 'react';
 import { postProducts } from '../utils/api';
 import SnackbarContext from '../utils/snackContext';
 import { getAll } from '../utils/api';
 
-export default function AddProductForm({
-  setIsAddModalOpened,
-  setProducts,
-  setFilters,
-}) {
-  const [product, setProduct] = useState({
-    name: '',
-    description: '',
-    image: '',
-    count: 0,
-    price: 0,
-    priceTotal: 0,
-  });
+const AddProductForm = ({ setIsAddModalOpened, setProducts }) => {
+  const nameRef = useRef('');
+  const descriptionRef = useRef('');
+  const imageRef = useRef('');
+  const countRef = useRef(0);
+  const priceRef = useRef(0);
+  const priceTotalRef = useRef(0);
 
   const { setSnack } = useContext(SnackbarContext);
 
-  const handleChange = (event) => {
-    setProduct((product) => {
-      return { ...product, [event.target.name]: event.target.value };
-    });
-  };
   const handleSubmit = async () => {
-    await postProducts(product);
+    const newProduct = {
+      name: nameRef.current.value,
+      description: descriptionRef.current.value,
+      image: imageRef.current.value,
+      count: countRef.current.value,
+      price: priceRef.current.value,
+      priceTotal: priceTotalRef.current.value,
+    };
+    await postProducts(newProduct);
     setIsAddModalOpened(false);
     setSnack({
       message: 'You added new product',
       severity: 'success',
       open: true,
       autoHideDuration: 2000,
+      position: { vertical: 'top', horizontal: 'center' },
     });
     const allProducts = await getAll('products');
     setProducts(allProducts);
   };
-
-  const isAddProductDisabled = !(
-    product.name &&
-    product.description &&
-    product.image &&
-    product.count &&
-    product.price &&
-    product.priceTotal
-  );
 
   return (
     <Box
@@ -70,8 +59,7 @@ export default function AddProductForm({
         label="Name"
         type="text"
         autoComplete="name"
-        onChange={handleChange}
-        value={product.name}
+        inputRef={nameRef}
       />
       <TextField
         variant="outlined"
@@ -80,8 +68,7 @@ export default function AddProductForm({
         label="Description"
         type="text"
         autoComplete="description"
-        onChange={handleChange}
-        value={product.description}
+        inputRef={descriptionRef}
       />
       <TextField
         variant="outlined"
@@ -90,8 +77,7 @@ export default function AddProductForm({
         label="Address of image"
         type="text"
         autoComplete="image"
-        onChange={handleChange}
-        value={product.image}
+        inputRef={imageRef}
       />
       <TextField
         variant="outlined"
@@ -100,8 +86,8 @@ export default function AddProductForm({
         label="Count"
         type="number"
         autoComplete="count"
-        onChange={handleChange}
-        value={product.count}
+        defaultValue={0}
+        inputRef={countRef}
       />
       <TextField
         variant="outlined"
@@ -110,8 +96,8 @@ export default function AddProductForm({
         label="Price"
         type="number"
         autoComplete="price"
-        onChange={handleChange}
-        value={product.price}
+        defaultValue={0}
+        inputRef={priceRef}
       />
       <TextField
         variant="outlined"
@@ -120,8 +106,8 @@ export default function AddProductForm({
         label="Price Total"
         type="number"
         autoComplete="priceTotal"
-        onChange={handleChange}
-        value={product.priceTotal}
+        defaultValue={0}
+        inputRef={priceTotalRef}
       />
       <Box
         sx={{
@@ -139,7 +125,6 @@ export default function AddProductForm({
           Cancel
         </Button>
         <Button
-          disabled={isAddProductDisabled}
           variant="contained"
           sx={{
             backgroundColor: '#82CD47',
@@ -154,4 +139,5 @@ export default function AddProductForm({
       </Box>
     </Box>
   );
-}
+};
+export default AddProductForm;

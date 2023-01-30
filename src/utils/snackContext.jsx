@@ -28,6 +28,7 @@ export const SnackbarProvider = ({ children }) => {
         open={snack.open}
         autoHideDuration={snack.autoHideDuration}
         onClose={handleClose}
+        sx={{ margin: '24px' }}
       >
         <Alert severity={snack.severity}>{snack.message}</Alert>
       </Snackbar>
