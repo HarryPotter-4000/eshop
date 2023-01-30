@@ -49,6 +49,20 @@ const theme = createTheme({
         },
       },
     },
+    MuiSelect: {
+      styleOverrides: {
+        root: {
+          color: '#393E46',
+          fieldset: {
+            borderColor: '#90CAF9',
+            borderWidth: '2px',
+          },
+          '&:hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#ff8f00',
+          },
+        },
+      },
+    },
   },
 });
 

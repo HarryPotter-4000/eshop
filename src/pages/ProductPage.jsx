@@ -6,7 +6,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import { getOne } from '../utils/api';
 
 function ProductPage(props) {
-  const { addtoOrder } = props;
+  const { addToOrder } = props;
   const [product, setProduct] = useState([]);
   const { id } = useParams();
   const [counter, setCounter] = useState(1);
@@ -101,12 +101,10 @@ function ProductPage(props) {
               <Button
                 variant="contained"
                 onClick={() => {
-                  addtoOrder({
-                    id: id,
-                    name: product.name,
-                    price: product.price,
-                    image: product.image,
+                  addToOrder({
+                    id,
                     counter,
+                    ...product,
                   });
                 }}
               >

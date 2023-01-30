@@ -1,8 +1,12 @@
 import { Box, InputLabel, MenuItem, FormControl, Select } from '@mui/material';
 
-export default function BasicSelect({ filter, filters, setFilter }) {
+export default function BasicSelect({
+  filterName,
+  setFilterName,
+  filterNames,
+}) {
   const handleChange = (event) => {
-    setFilter(event.target.value);
+    setFilterName(event.target.value);
   };
 
   return (
@@ -19,14 +23,14 @@ export default function BasicSelect({ filter, filters, setFilter }) {
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={filter}
+          value={filterName}
           label="Name"
           onChange={handleChange}
         >
-          {filters &&
-            filters.map((filter) => (
-              <MenuItem key={filter} value={filter}>
-                {filter}
+          {filterNames &&
+            filterNames.map((filterName) => (
+              <MenuItem key={filterName} value={filterName}>
+                {filterName}
               </MenuItem>
             ))}
         </Select>

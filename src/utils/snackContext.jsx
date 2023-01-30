@@ -9,6 +9,7 @@ export const SnackbarProvider = ({ children }) => {
     severity: 'success',
     message: '',
     autoHideDuration: 0,
+    position: { vertical: 'bottom', horizontal: 'left' },
   });
 
   const handleClose = (event, reason) => {
@@ -23,6 +24,7 @@ export const SnackbarProvider = ({ children }) => {
   return (
     <SnackbarContext.Provider value={{ setSnack }}>
       <Snackbar
+        anchorOrigin={snack.position}
         open={snack.open}
         autoHideDuration={snack.autoHideDuration}
         onClose={handleClose}

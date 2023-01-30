@@ -22,9 +22,11 @@ export default function AddProductForm({
   const { setSnack } = useContext(SnackbarContext);
 
   const handleChange = (event) => {
-    setProduct({ ...product, [event.target.name]: event.target.value });
+    setProduct((product) => {
+      return { ...product, [event.target.name]: event.target.value };
+    });
   };
-  const handleSubmit = async (product) => {
+  const handleSubmit = async () => {
     await postProducts(product);
     setIsAddModalOpened(false);
     setSnack({
@@ -35,11 +37,16 @@ export default function AddProductForm({
     });
     const allProducts = await getAll('products');
     setProducts(allProducts);
-    const names = allProducts.map((product) => {
-      return product.name;
-    });
-    setFilters(names);
   };
+
+  const isAddProductDisabled = !(
+    product.name &&
+    product.description &&
+    product.image &&
+    product.count &&
+    product.price &&
+    product.priceTotal
+  );
 
   return (
     <Box
@@ -132,14 +139,7 @@ export default function AddProductForm({
           Cancel
         </Button>
         <Button
-          disabled={
-            !product.name ||
-            !product.description ||
-            !product.image ||
-            !product.count ||
-            !product.price ||
-            !product.priceTotal
-          }
+          disabled={isAddProductDisabled}
           variant="contained"
           sx={{
             backgroundColor: '#82CD47',
@@ -147,7 +147,7 @@ export default function AddProductForm({
               backgroundColor: '#459506',
             },
           }}
-          onClick={() => handleSubmit(product)}
+          onClick={() => handleSubmit()}
         >
           Add product
         </Button>

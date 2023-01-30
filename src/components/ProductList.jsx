@@ -2,7 +2,7 @@ import { Container, Stack } from '@mui/system';
 import ProductItem from './ProductItem';
 
 function ProductList(props) {
-  const { products, addToOrder, filter } = props;
+  const { products, addToOrder, filterName } = props;
   return (
     <Container
       width="lg"
@@ -32,12 +32,9 @@ function ProductList(props) {
         }}
       >
         {products
-          .filter((product) => {
-            if (filter !== '') {
-              return product.name === filter;
-            }
-            return product;
-          })
+          .filter((product) =>
+            filterName !== '' ? product.name === filterName : product
+          )
           .map((product) => {
             return (
               <ProductItem

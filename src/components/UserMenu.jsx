@@ -74,9 +74,7 @@ function UserMenu() {
               transformOrigin={{ horizontal: 'right', vertical: 'top' }}
               anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-              {user && (
-                <MenuItem sx={{ color: 'text.main' }}>{user.email}</MenuItem>
-              )}
+              <MenuItem sx={{ color: 'text.main' }}>{user.email}</MenuItem>
               <MenuItem sx={{ color: 'price.main' }} onClick={logout}>
                 Sign Out
               </MenuItem>

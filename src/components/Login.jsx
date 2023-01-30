@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useContext } from 'react';
 import {
   Avatar,
   Button,
@@ -9,15 +9,15 @@ import {
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../utils/firebase';
-import AuthContext from '../utils/authContext';
+import SnackbarContent from '../utils/snackContext';
 
 export default function SignIn() {
-  const { user } = useContext(AuthContext);
+  const { setSnack } = useContext(SnackbarContent);
   let navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -30,9 +30,23 @@ export default function SignIn() {
     email = email.trim();
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      setSnack({
+        message: `Hello, ${email}!`,
+        severity: 'success',
+        open: true,
+        autoHideDuration: 2000,
+        position: { vertical: 'top', horizontal: 'center' },
+      });
       navigate(-1);
     } catch (error) {
       console.log(error.message);
+      setSnack({
+        message: 'Invalid email or password',
+        severity: 'warning',
+        open: true,
+        autoHideDuration: 2000,
+        position: { vertical: 'top', horizontal: 'center' },
+      });
     }
     reset();
   };
@@ -126,7 +140,7 @@ export default function SignIn() {
               },
             })}
             error={!!errors?.password}
-            helperText={errors?.password ? errors.password.message : null}
+            helperText={errors?.password && errors.password.message}
           />
           <Button
             type="submit"

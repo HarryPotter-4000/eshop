@@ -19,13 +19,15 @@ import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import BasicSelect from '../components/BasicSelect';
+import ClearIcon from '@mui/icons-material/Clear';
 
 function Home(props) {
   const { addToOrder } = props;
   const [products, setProducts] = useState([]);
-  const [filters, setFilters] = useState('');
-  const [filter, setFilter] = useState('');
-  const [isModalOpened, setIsModalOpened] = useState(false);
+  const [filterNames, setFilterNames] = useState('');
+  const [filterName, setFilterName] = useState('');
+  const [isRandomProductModalOpened, setIsRandomProductModalOpened] =
+    useState(false);
   const [isAddModalOpened, setIsAddModalOpened] = useState(false);
 
   const randomProduct = products[Math.floor(Math.random() * products.length)];
@@ -36,24 +38,31 @@ function Home(props) {
     (async () => {
       const allProducts = await getAll('products');
       setProducts(allProducts);
-      const names = allProducts.map((product) => {
-        return product.name;
-      });
-      setFilters(names);
     })();
-    console.log('-------------1');
   }, []);
 
-  console.log(products); //Why is the data updated 4 times in the console
+  useEffect(() => {
+    const names = products.map((product) => {
+      return product.name;
+    });
+    setFilterNames(names);
+  }, [products]);
 
   const sortByName = () => {
-    setProducts([...products].sort((a, b) => a.name.localeCompare(b.name)));
+    setProducts((products) =>
+      [...products].sort((a, b) => a.name.localeCompare(b.name))
+    );
   };
   const sortByAscending = () => {
-    setProducts([...products].sort((a, b) => a.price - b.price));
+    setProducts((products) => [...products].sort((a, b) => a.price - b.price));
   };
   const sortByDescending = () => {
-    setProducts([...products].sort((a, b) => b.price - a.price));
+    setProducts((products) => [...products].sort((a, b) => b.price - a.price));
+  };
+
+  const clearSelect = () => {
+    setProducts(products);
+    setFilterName('');
   };
 
   return (
@@ -78,8 +87,9 @@ function Home(props) {
           <Box>
             <AddProductForm
               setIsAddModalOpened={setIsAddModalOpened}
+              products={products}
               setProducts={setProducts}
-              setFilters={setFilters}
+              setFilters={setFilterNames}
             />
           </Box>
         </Modal>
@@ -89,13 +99,13 @@ function Home(props) {
         <Button
           size="large"
           startIcon={<CasinoIcon />}
-          onClick={() => setIsModalOpened(true)}
+          onClick={() => setIsRandomProductModalOpened(true)}
         >
           Maybe, I want to buy...
         </Button>
       </Box>
-      {isModalOpened && (
-        <Modal onClose={() => setIsModalOpened(false)}>
+      {isRandomProductModalOpened && (
+        <Modal onClose={() => setIsRandomProductModalOpened(false)}>
           <Typography pb={2} variant="h5" color="text.main">
             Here you go!
           </Typography>
@@ -117,7 +127,7 @@ function Home(props) {
               component={'div'}
               variant="outlined"
               color="error"
-              onClick={() => setIsModalOpened(false)}
+              onClick={() => setIsRandomProductModalOpened(false)}
               ml="24px"
             >
               NO,THANKS
@@ -132,7 +142,22 @@ function Home(props) {
           margin: '16px 24px ',
         }}
       >
-        <BasicSelect filters={filters} filter={filter} setFilter={setFilter} />
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-start',
+          }}
+        >
+          <BasicSelect
+            filterNames={filterNames}
+            filterName={filterName}
+            setFilterName={setFilterName}
+          />
+          <Button onClick={clearSelect}>
+            <ClearIcon color="error" />
+          </Button>
+        </Box>
+
         <Box
           sx={{
             display: 'flex',
@@ -176,7 +201,7 @@ function Home(props) {
         }}
       >
         <ProductList
-          filter={filter}
+          filterName={filterName}
           products={products}
           addToOrder={addToOrder}
         />

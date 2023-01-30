@@ -24,32 +24,22 @@ function App() {
     if (found) {
       let count = found.count + orderItem.counter;
       setOrder(
-        order.map((item) => {
-          if (item.id !== orderItem.id) return item;
-
-          return {
-            id: item.id,
-            name: item.name,
-            price: item.price,
-            image: item.image,
-            count,
-          };
-        })
+        order.map((item) =>
+          item.id !== orderItem.id ? item : { ...item, count }
+        )
       );
       setSnack({
         message: 'You added the same item',
         severity: 'warning',
         open: true,
-        autoHideDuration: 3000,
+        autoHideDuration: 2000,
+        position: { vertical: 'bottom', horizontal: 'left' },
       });
     } else {
       setOrder([
         ...order,
         {
-          id: orderItem.id,
-          name: orderItem.name,
-          price: orderItem.price,
-          image: orderItem.image,
+          ...orderItem,
           count: orderItem.counter,
         },
       ]);
@@ -57,7 +47,8 @@ function App() {
         message: 'You added an item to your shopping cart',
         severity: 'success',
         open: true,
-        autoHideDuration: 1000,
+        autoHideDuration: 2000,
+        position: { vertical: 'bottom', horizontal: 'left' },
       });
     }
   };
@@ -102,7 +93,7 @@ function App() {
             path="/product/:id"
             element={
               <ProductPage
-                addtoOrder={addToOrder}
+                addToOrder={addToOrder}
                 increaseCount={increaseCount}
                 decreaseCount={decreaseCount}
               />

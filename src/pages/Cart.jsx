@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { useContext } from 'react';
 import {
   Box,
   Button,
@@ -12,7 +11,6 @@ import {
 } from '@mui/material';
 import { useState, useEffect } from 'react';
 import OrderItem from '../components/OrderItem';
-import AuthContext from '../utils/authContext';
 
 function Cart({ order, removeFromOrder, increaseCount, decreaseCount }) {
   const calcTotal = () => {
@@ -26,10 +24,8 @@ function Cart({ order, removeFromOrder, increaseCount, decreaseCount }) {
   };
   const [total, setTotal] = useState(() => calcTotal());
 
-  const { user } = useContext(AuthContext);
-
   useEffect(() => {
-    setTotal(() => calcTotal(order));
+    setTotal(() => calcTotal());
   }, [order]);
 
   return (
