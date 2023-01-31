@@ -1,17 +1,39 @@
-import { Box, Button, Container, Typography, Stack } from '@mui/material';
-import { useState, useEffect } from 'react';
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Container,
+  Typography,
+  Stack,
+} from '@mui/material';
+import { useState, useEffect, useContext } from 'react';
 import ProductList from '../components/ProductList';
+import AddBusinessIcon from '@mui/icons-material/AddBusiness';
 import CasinoIcon from '@mui/icons-material/Casino';
 import Modal from '../components/Modal';
 import { Link } from 'react-router-dom';
+import AuthContext from '../utils/authContext';
+import AddProductForm from '../components/AddProductForm';
 import { getAll } from '../utils/api';
+import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import BasicSelect from '../components/BasicSelect';
+import ClearIcon from '@mui/icons-material/Clear';
 
 function Home(props) {
   const { addToOrder } = props;
   const [products, setProducts] = useState([]);
+  const [filterNames, setFilterNames] = useState('');
+  const [filterName, setFilterName] = useState('');
+  const [isRandomProductModalOpened, setIsRandomProductModalOpened] =
+    useState(false);
+  const [isAddModalOpened, setIsAddModalOpened] = useState(false);
 
-  const [isModalOpened, setIsModalOpened] = useState(false);
   const randomProduct = products[Math.floor(Math.random() * products.length)];
+
+  const { user } = useContext(AuthContext);
+  const ADMIN_EMAIL = 'admin@admin.com'
 
   useEffect(() => {
     (async () => {
@@ -19,21 +41,72 @@ function Home(props) {
       setProducts(allProducts);
     })();
   }, []);
-  console.log(products); //Why is the data updated 4 times in the console
+
+  useEffect(() => {
+    const names = products.map((product) => {
+      return product.name;
+    });
+    setFilterNames(products.map((product) => product.name;));
+  }, [products]);
+
+  const sortByName = () => {
+    setProducts((products) =>
+      [...products].sort((a, b) => a.name.localeCompare(b.name))
+    );
+  };
+  const sortByAscending = () => {
+    setProducts((products) => [...products].sort((a, b) => a.price - b.price));
+  };
+  const sortByDescending = () => {
+    setProducts((products) => [...products].sort((a, b) => b.price - a.price));
+  };
+
+  const clearSelect = () => {
+    setProducts(products);
+    setFilterName('');
+  };
 
   return (
     <Container width="lg" style={{ padding: '0px' }}>
+      {user && user?.email === ADMIN_EMAIL && (
+        <Box sx={{ marginLeft: '24px' }}>
+          <Button
+            size="large"
+            color="price"
+            startIcon={<AddBusinessIcon />}
+            onClick={() => setIsAddModalOpened(true)}
+          >
+            Add new product
+          </Button>
+        </Box>
+      )}
+      {isAddModalOpened && (
+        <Modal onClose={() => setIsAddModalOpened(false)}>
+          <Typography pb={2} variant="h5" color="text.main">
+            Add new product
+          </Typography>
+          <Box>
+            <AddProductForm
+              setIsAddModalOpened={setIsAddModalOpened}
+              products={products}
+              setProducts={setProducts}
+              setFilters={setFilterNames}
+            />
+          </Box>
+        </Modal>
+      )}
+
       <Box sx={{ marginLeft: '24px' }}>
         <Button
           size="large"
           startIcon={<CasinoIcon />}
-          onClick={() => setIsModalOpened(true)}
+          onClick={() => setIsRandomProductModalOpened(true)}
         >
           Maybe, I want to buy...
         </Button>
       </Box>
-      {isModalOpened && (
-        <Modal onClose={() => setIsModalOpened(false)}>
+      {isRandomProductModalOpened && (
+        <Modal onClose={() => setIsRandomProductModalOpened(false)}>
           <Typography pb={2} variant="h5" color="text.main">
             Here you go!
           </Typography>
@@ -55,7 +128,7 @@ function Home(props) {
               component={'div'}
               variant="outlined"
               color="error"
-              onClick={() => setIsModalOpened(false)}
+              onClick={() => setIsRandomProductModalOpened(false)}
               ml="24px"
             >
               NO,THANKS
@@ -63,6 +136,52 @@ function Home(props) {
           </Box>
         </Modal>
       )}
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          margin: '16px 24px ',
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-start',
+          }}
+        >
+          <BasicSelect
+            filterNames={filterNames}
+            filterName={filterName}
+            setFilterName={setFilterName}
+          />
+          <Button onClick={clearSelect}>
+            <ClearIcon color="error" />
+          </Button>
+        </Box>
+
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+          }}
+        >
+          <ButtonGroup
+            variant="contained"
+            aria-label="outlined primary button group"
+          >
+            <Button onClick={sortByName}>
+              <SortByAlphaIcon />
+            </Button>
+            <Button onClick={sortByAscending}>
+              <ArrowUpwardIcon />
+            </Button>
+            <Button onClick={sortByDescending}>
+              <ArrowDownwardIcon />
+            </Button>
+          </ButtonGroup>
+        </Box>
+      </Box>
+
       <Stack
         sx={{
           width: {
@@ -82,7 +201,11 @@ function Home(props) {
           margin: '0 auto',
         }}
       >
-        <ProductList products={products} addToOrder={addToOrder} />
+        <ProductList
+          filterName={filterName}
+          products={products}
+          addToOrder={addToOrder}
+        />
       </Stack>
     </Container>
   );

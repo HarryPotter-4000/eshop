@@ -2,7 +2,7 @@ import { Container, Stack } from '@mui/system';
 import ProductItem from './ProductItem';
 
 function ProductList(props) {
-  const { products, addToOrder } = props;
+  const { products, addToOrder, filterName } = props;
   return (
     <Container
       width="lg"
@@ -31,15 +31,19 @@ function ProductList(props) {
           alignItems: 'flex-start',
         }}
       >
-        {products.map((product) => {
-          return (
-            <ProductItem
-              key={product.id}
-              addToOrder={addToOrder}
-              {...product}
-            />
-          );
-        })}
+        {products
+          .filter((product) =>
+            filterName  ?  product: product.name === filterName
+          )
+          .map((product) => {
+            return (
+              <ProductItem
+                key={product.id}
+                addToOrder={addToOrder}
+                {...product}
+              />
+            );
+          })}
       </Stack>
     </Container>
   );

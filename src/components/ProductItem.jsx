@@ -11,7 +11,8 @@ import {
 import { Link } from 'react-router-dom';
 
 export default function ProductItem(props) {
-  const { id, image, name, description, price, addToOrder } = props;
+  const { id, addToOrder, ...other } = props;
+
   const counter = 1;
   return (
     <Card
@@ -22,14 +23,14 @@ export default function ProductItem(props) {
         },
         height: 360,
         boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
-        margin: '16px',
+        margin: '24px',
       }}
     >
       <CardMedia
         component="img"
         alt="green iguana"
         height="140"
-        image={image}
+        image={other.image}
       />
       <Stack
         sx={{
@@ -42,7 +43,7 @@ export default function ProductItem(props) {
       >
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            {name}
+            {other.name}
           </Typography>
           <Typography
             variant="body2"
@@ -56,10 +57,10 @@ export default function ProductItem(props) {
               height: '64px',
             }}
           >
-            {description}
+            {other.description}
           </Typography>
           <Typography variant="h5" color="price.main">
-            {price}$
+            {other.price}$
           </Typography>
         </CardContent>
         <CardActions
@@ -75,7 +76,7 @@ export default function ProductItem(props) {
           <Button
             variant="text"
             onClick={() => {
-              addToOrder({ id, name, price, image, counter });
+              addToOrder({ id, counter, ...other });
             }}
           >
             BUY

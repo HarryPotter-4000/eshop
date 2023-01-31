@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -9,26 +10,22 @@ import {
   Stack,
 } from '@mui/material';
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import OrderItem from '../components/OrderItem';
 
 function Cart({ order, removeFromOrder, increaseCount, decreaseCount }) {
-  const [total, setTotal] = useState({
-    price: order.reduce(
-      (previous, current) => previous + current.price * current.count,
-      0
-    ),
-    count: order.reduce((previous, current) => previous + current.count, 0),
-  });
-
-  useEffect(() => {
-    setTotal({
+  const calcTotal = () => {
+    return {
       price: order.reduce(
         (previous, current) => previous + current.price * current.count,
         0
       ),
       count: order.reduce((previous, current) => previous + current.count, 0),
-    });
+    };
+  };
+  const [total, setTotal] = useState(() => calcTotal());
+
+  useEffect(() => {
+    setTotal(() => calcTotal());
   }, [order]);
 
   return (

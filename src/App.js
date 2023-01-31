@@ -1,25 +1,21 @@
 import './App.css';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Routes, Route } from 'react-router';
-import { Container, Snackbar, Alert } from '@mui/material';
+import { Container } from '@mui/material';
 import Home from './pages/Home';
 import ProductPage from './pages/ProductPage';
 import Cart from './pages/Cart';
 import OrderPage from './pages/OrderPage';
 import Header from './components/Header';
-import { createContext } from 'react';
-import SignIn from './pages/SignIn';
+import LoginPage from './pages/LoginPage';
+import { AuthProvider } from './utils/authContext';
 
-export const SnackbarContext = createContext({});
+import SnackbarContent from './utils/snackContext';
 
 function App() {
   const [order, setOrder] = useState([]);
-  const [snack, setSnack] = useState({
-    open: false,
-    severity: 'success',
-    message: '',
-    autoHideDuration: 0,
-  });
+
+  const { setSnack } = useContext(SnackbarContent);
 
   const addToOrder = (orderItem) => {
     const found = order.find((obj) => {
@@ -28,32 +24,22 @@ function App() {
     if (found) {
       let count = found.count + orderItem.counter;
       setOrder(
-        order.map((item) => {
-          if (item.id !== orderItem.id) return item;
-
-          return {
-            id: item.id,
-            name: item.name,
-            price: item.price,
-            image: item.image,
-            count,
-          };
-        })
+        order.map((item) =>
+          item.id !== orderItem.id ? item : { ...item, count }
+        )
       );
       setSnack({
         message: 'You added the same item',
         severity: 'warning',
         open: true,
-        autoHideDuration: 3000,
+        autoHideDuration: 2000,
+        position: { vertical: 'bottom', horizontal: 'left' },
       });
     } else {
       setOrder([
         ...order,
         {
-          id: orderItem.id,
-          name: orderItem.name,
-          price: orderItem.price,
-          image: orderItem.image,
+          ...orderItem,
           count: orderItem.counter,
         },
       ]);
@@ -61,7 +47,8 @@ function App() {
         message: 'You added an item to your shopping cart',
         severity: 'success',
         open: true,
-        autoHideDuration: 1000,
+        autoHideDuration: 2000,
+        position: { vertical: 'bottom', horizontal: 'left' },
       });
     }
   };
@@ -95,54 +82,38 @@ function App() {
       );
     });
   };
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setSnack({
-      open: false,
-    });
-  };
 
   return (
     <Container maxWidth="lg">
-      <Header orderLen={order.length} />
-      <SnackbarContext.Provider value={{ snack, setSnack }}>
-        <Snackbar
-          open={snack.open}
-          autoHideDuration={snack.autoHideDuration}
-          onClose={handleClose}
-        >
-          <Alert severity={snack.severity}>{snack.message}</Alert>
-        </Snackbar>
-      </SnackbarContext.Provider>
-      <Routes>
-        <Route path="/" element={<Home addToOrder={addToOrder} />} />
-        <Route
-          path="/product/:id"
-          element={
-            <ProductPage
-              addtoOrder={addToOrder}
-              increaseCount={increaseCount}
-              decreaseCount={decreaseCount}
-            />
-          }
-        />
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/order" element={<OrderPage />} />
-        <Route
-          path="/cart"
-          element={
-            <Cart
-              order={order}
-              removeFromOrder={removeFromOrder}
-              increaseCount={increaseCount}
-              decreaseCount={decreaseCount}
-            />
-          }
-        />
-      </Routes>
+      <AuthProvider>
+        <Header orderLen={order.length} />
+        <Routes>
+          <Route path="/" element={<Home addToOrder={addToOrder} />} />
+          <Route
+            path="/product/:id"
+            element={
+              <ProductPage
+                addToOrder={addToOrder}
+                increaseCount={increaseCount}
+                decreaseCount={decreaseCount}
+              />
+            }
+          />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/order" element={<OrderPage />} />
+          <Route
+            path="/cart"
+            element={
+              <Cart
+                order={order}
+                removeFromOrder={removeFromOrder}
+                increaseCount={increaseCount}
+                decreaseCount={decreaseCount}
+              />
+            }
+          />
+        </Routes>
+      </AuthProvider>
     </Container>
   );
 }

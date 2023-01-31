@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useContext } from 'react';
 import {
   Avatar,
   Button,
@@ -8,9 +8,16 @@ import {
   Container,
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../utils/firebase';
+import SnackbarContent from '../utils/snackContext';
 
 export default function SignIn() {
+  const { setSnack } = useContext(SnackbarContent);
+  let navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -18,9 +25,29 @@ export default function SignIn() {
     reset,
   } = useForm({ mode: 'onChange' });
 
-  const onSubmit = (data) => {
-    data.email = data.email.trim();
-    console.log(JSON.stringify(data, null));
+  const login = async (data) => {
+    let { email, password } = data;
+    email = email.trim();
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      setSnack({
+        message: `Hello, ${email}!`,
+        severity: 'success',
+        open: true,
+        autoHideDuration: 2000,
+        position: { vertical: 'top', horizontal: 'center' },
+      });
+      navigate(-1);
+    } catch (error) {
+      console.log(error.message);
+      setSnack({
+        message: 'Invalid email or password',
+        severity: 'warning',
+        open: true,
+        autoHideDuration: 2000,
+        position: { vertical: 'top', horizontal: 'center' },
+      });
+    }
     reset();
   };
 
@@ -42,7 +69,7 @@ export default function SignIn() {
         </Typography>
         <Box
           component="form"
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(login)}
           noValidate
           sx={{
             mt: 1,
@@ -113,7 +140,7 @@ export default function SignIn() {
               },
             })}
             error={!!errors?.password}
-            helperText={errors?.password ? errors.password.message : null}
+            helperText={errors?.password && errors.password.message}
           />
           <Button
             type="submit"

@@ -24,8 +24,9 @@ const Modal = ({ children, onClose }) => {
           left: '50%',
           transform: 'translate(-50%, -50%)',
           width: {
-            sm: '240px',
-            xs: '280px',
+            xs: '240px',
+            sm: '280px',
+            md: '540px',
           },
           minHeight: '160px',
           borderRadius: '4px',
@@ -49,7 +50,7 @@ const Modal = ({ children, onClose }) => {
         >
           <CloseIcon sx={{ color: '#90CAF9' }} />
         </IconButton>
-        <Box>{children}</Box>
+        <Box my={3}>{children}</Box>
       </Box>
     </Container>,
     document.getElementById('root')
