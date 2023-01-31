@@ -132,7 +132,7 @@ const AddProductForm = ({ setIsAddModalOpened, setProducts }) => {
               backgroundColor: '#459506',
             },
           }}
-          onClick={() => handleSubmit()}
+          onClick={handleSubmit}
         >
           Add product
         </Button>
