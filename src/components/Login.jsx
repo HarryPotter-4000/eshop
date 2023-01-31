@@ -8,14 +8,16 @@ import {
   Container,
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../utils/firebase';
 import SnackbarContent from '../utils/snackContext';
+import AuthContext from '../utils/authContext';
 
 export default function SignIn() {
   const { setSnack } = useContext(SnackbarContent);
+  const { user } = useContext(AuthContext);
   let navigate = useNavigate();
 
   const {
@@ -39,7 +41,6 @@ export default function SignIn() {
       });
       navigate(-1);
     } catch (error) {
-      console.log(error.message);
       setSnack({
         message: 'Invalid email or password',
         severity: 'warning',
@@ -50,6 +51,9 @@ export default function SignIn() {
     }
     reset();
   };
+  if (user) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <Container component="main" maxWidth="xs">
