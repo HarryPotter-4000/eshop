@@ -33,6 +33,7 @@ function Home(props) {
   const randomProduct = products[Math.floor(Math.random() * products.length)];
 
   const { user } = useContext(AuthContext);
+  const ADMIN_EMAIL = 'admin@admin.com'
 
   useEffect(() => {
     (async () => {
@@ -67,7 +68,7 @@ function Home(props) {
 
   return (
     <Container width="lg" style={{ padding: '0px' }}>
-      {user && user?.email === 'admin@admin.com' && (
+      {user && user?.email === ADMIN_EMAIL && (
         <Box sx={{ marginLeft: '24px' }}>
           <Button
             size="large"
