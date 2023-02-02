@@ -33,7 +33,7 @@ function ProductList(props) {
       >
         {products
           .filter((product) =>
-            filterName  ?  product: product.name === filterName
+            filterName ? product.name === filterName : product
           )
           .map((product) => {
             return (

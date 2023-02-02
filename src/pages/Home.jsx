@@ -33,7 +33,7 @@ function Home(props) {
   const randomProduct = products[Math.floor(Math.random() * products.length)];
 
   const { user } = useContext(AuthContext);
-  const ADMIN_EMAIL = 'admin@admin.com'
+  const ADMIN_EMAIL = 'admin@admin.com';
 
   useEffect(() => {
     (async () => {
@@ -43,10 +43,7 @@ function Home(props) {
   }, []);
 
   useEffect(() => {
-    const names = products.map((product) => {
-      return product.name;
-    });
-    setFilterNames(products.map((product) => product.name;));
+    setFilterNames(products.map((product) => product.name));
   }, [products]);
 
   const sortByName = () => {
