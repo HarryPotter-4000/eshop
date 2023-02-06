@@ -1,12 +1,12 @@
+import useNavigateParams from '../utils/useNavigateParams';
 import { Box, InputLabel, MenuItem, FormControl, Select } from '@mui/material';
 
-export default function BasicSelect({
-  filterName,
-  setFilterName,
-  filterNames,
-}) {
+const BasicSelect = ({ filterName, setFilterName, filterNames }) => {
+  const navigate = useNavigateParams();
   const handleChange = (event) => {
-    setFilterName(event.target.value);
+    const name = event.target.value;
+    setFilterName(name);
+    navigate('/', { page: name });
   };
 
   return (
@@ -37,4 +37,5 @@ export default function BasicSelect({
       </FormControl>
     </Box>
   );
-}
+};
+export default BasicSelect;

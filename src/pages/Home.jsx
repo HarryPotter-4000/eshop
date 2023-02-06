@@ -1,27 +1,30 @@
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import { useState, useEffect, useContext } from 'react';
 import {
   Box,
   Button,
   ButtonGroup,
   Container,
+  Pagination,
   Typography,
   Stack,
 } from '@mui/material';
-import { useState, useEffect, useContext } from 'react';
-import ProductList from '../components/ProductList';
 import AddBusinessIcon from '@mui/icons-material/AddBusiness';
 import CasinoIcon from '@mui/icons-material/Casino';
-import Modal from '../components/Modal';
-import { Link } from 'react-router-dom';
-import AuthContext from '../utils/authContext';
-import AddProductForm from '../components/AddProductForm';
-import { getAll } from '../utils/api';
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import BasicSelect from '../components/BasicSelect';
 import ClearIcon from '@mui/icons-material/Clear';
+import AuthContext from '../utils/authContext';
+import Modal from '../components/Modal';
+import { getAll } from '../utils/api';
+import useNavigateParams from '../utils/useNavigateParams';
+import AddProductForm from '../components/AddProductForm';
+import BasicSelect from '../components/BasicSelect';
+import ProductList from '../components/ProductList';
+import Spinner from '../components/Spinner';
 
-function Home(props) {
+const Home = (props) => {
   const { addToOrder } = props;
   const [products, setProducts] = useState([]);
   const [filterNames, setFilterNames] = useState('');
@@ -29,12 +32,16 @@ function Home(props) {
   const [isRandomProductModalOpened, setIsRandomProductModalOpened] =
     useState(false);
   const [isAddModalOpened, setIsAddModalOpened] = useState(false);
-
+  const [searchParams] = useSearchParams();
+  const [currentPage, setCurrentPage] = useState(
+    Number(searchParams.get('page')) || 1
+  );
+  const PER_PAGE = 4;
   const randomProduct = products[Math.floor(Math.random() * products.length)];
 
   const { user } = useContext(AuthContext);
   const ADMIN_EMAIL = 'admin@admin.com';
-
+  const location = useLocation();
   useEffect(() => {
     (async () => {
       const allProducts = await getAll('products');
@@ -58,10 +65,35 @@ function Home(props) {
     setProducts((products) => [...products].sort((a, b) => b.price - a.price));
   };
 
+  const filteredProducts = products.filter((product) =>
+    filterName ? product.name === filterName : product
+  );
+
   const clearSelect = () => {
     setProducts(products);
     setFilterName('');
+    navigate('/');
   };
+
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(filteredProducts.length / PER_PAGE); i++) {
+    pageNumbers.push(i);
+  }
+  const indexOfLastProduct = currentPage * PER_PAGE;
+  const indexOfFirstProduct = indexOfLastProduct - PER_PAGE;
+  const currentProduct = filteredProducts.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+
+  const navigate = useNavigateParams();
+  const handleChange = (event, value) => {
+    setCurrentPage(value);
+    navigate('/', { page: value });
+  };
+  useEffect(() => {
+    setCurrentPage(Number(searchParams.get('page')) || 1);
+  }, [location]);
 
   return (
     <Container width="lg" style={{ padding: '0px' }}>
@@ -151,8 +183,8 @@ function Home(props) {
             filterName={filterName}
             setFilterName={setFilterName}
           />
-          <Button onClick={clearSelect}>
-            <ClearIcon color="error" />
+          <Button disabled={!filterName} onClick={clearSelect}>
+            <ClearIcon color={filterName ? 'error' : 'grey'} />
           </Button>
         </Box>
 
@@ -178,7 +210,6 @@ function Home(props) {
           </ButtonGroup>
         </Box>
       </Box>
-
       <Stack
         sx={{
           width: {
@@ -198,13 +229,33 @@ function Home(props) {
           margin: '0 auto',
         }}
       >
+        {!filterName &&
+          (filteredProducts.length ? (
+            <Stack
+              spacing={2}
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                margin: '0 auto',
+              }}
+            >
+              <Pagination
+                count={pageNumbers.length}
+                page={currentPage}
+                onChange={handleChange}
+              />
+            </Stack>
+          ) : (
+            <Spinner />
+          ))}
         <ProductList
           filterName={filterName}
-          products={products}
+          products={filterName ? filteredProducts : currentProduct}
           addToOrder={addToOrder}
         />
+        ;
       </Stack>
     </Container>
   );
-}
+};
 export default Home;
