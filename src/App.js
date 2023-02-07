@@ -9,6 +9,7 @@ import OrderPage from './pages/OrderPage';
 import Header from './components/Header';
 import LoginPage from './pages/LoginPage';
 import { AuthProvider } from './utils/authContext';
+import PrivateRoute from './components/PrivateRoute';
 
 import SnackbarContent from './utils/snackContext';
 
@@ -100,7 +101,9 @@ function App() {
             }
           />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/order" element={<OrderPage />} />
+          <PrivateRoute>
+            <Route path="/order" element={<OrderPage />} />
+          </PrivateRoute>
           <Route
             path="/cart"
             element={
