@@ -101,9 +101,16 @@ function App() {
             }
           />
           <Route path="/login" element={<LoginPage />} />
-          <PrivateRoute>
-            <Route path="/order" element={<OrderPage />} />
-          </PrivateRoute>
+
+          <Route
+            path="/order"
+            element={
+              <PrivateRoute>
+                <OrderPage />
+              </PrivateRoute>
+            }
+          />
+
           <Route
             path="/cart"
             element={
