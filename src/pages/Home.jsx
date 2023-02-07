@@ -36,12 +36,12 @@ const Home = (props) => {
   const [currentPage, setCurrentPage] = useState(
     Number(searchParams.get('page')) || 1
   );
-  const PER_PAGE = 4;
   const randomProduct = products[Math.floor(Math.random() * products.length)];
 
   const { user } = useContext(AuthContext);
   const ADMIN_EMAIL = 'admin@admin.com';
   const location = useLocation();
+
   useEffect(() => {
     (async () => {
       const allProducts = await getAll('products');
@@ -65,10 +65,13 @@ const Home = (props) => {
     setProducts((products) => [...products].sort((a, b) => b.price - a.price));
   };
 
-  const filteredProducts = products.filter((product) =>
-    filterName ? product.name === filterName : product
-  );
-
+  const filteredProducts = products.filter((product) => {
+    if (filterName) {
+      return product.name === filterName;
+    } else {
+      return products;
+    }
+  });
   const clearSelect = () => {
     setProducts(products);
     setFilterName('');
@@ -76,7 +79,9 @@ const Home = (props) => {
   };
 
   const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(filteredProducts.length / PER_PAGE); i++) {
+  const PER_PAGE = 4;
+  const PRODUCTS_COUNT = filteredProducts.length;
+  for (let i = 1; i <= Math.ceil(PRODUCTS_COUNT / PER_PAGE); i++) {
     pageNumbers.push(i);
   }
   const indexOfLastProduct = currentPage * PER_PAGE;
@@ -230,7 +235,7 @@ const Home = (props) => {
         }}
       >
         {!filterName &&
-          (filteredProducts.length ? (
+          (PRODUCTS_COUNT ? (
             <Stack
               spacing={2}
               sx={{
@@ -253,7 +258,6 @@ const Home = (props) => {
           products={filterName ? filteredProducts : currentProduct}
           addToOrder={addToOrder}
         />
-        ;
       </Stack>
     </Container>
   );
