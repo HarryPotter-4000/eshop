@@ -37,8 +37,8 @@ function Item(props) {
         >
           {name}
         </Typography>
-        <Typography variant="h6" sx={{ color: 'text.main', mr: '16px' }}>
-          {count}
+        <Typography variant="subtitle1" sx={{ color: 'text.main', mr: '16px' }}>
+          {count}qty
         </Typography>
         <Typography variant="h6" color="price.main">
           ${price}

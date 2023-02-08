@@ -44,7 +44,7 @@ const Home = (props) => {
   }, []);
 
   useEffect(() => {
-    setFilterNames(products.map((product) => product.name));
+    setFilterNames(products.map((product) => product.name).sort());
   }, [products]);
 
   const sortByName = () => {

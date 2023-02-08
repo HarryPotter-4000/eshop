@@ -1,12 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import {
-  Box,
-  Button,
-  Container,
-  Divider,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Container, Stack, Typography } from '@mui/material';
 import AddBusinessIcon from '@mui/icons-material/AddBusiness';
 import AddProductForm from '../components/AddProductForm';
 import { deleteProduct, getAll } from '../utils/api';
@@ -37,7 +30,7 @@ const AdminPage = () => {
       severity: 'success',
       open: true,
       autoHideDuration: 2000,
-      position: { vertical: 'top', horizontal: 'center' },
+      position: { vertical: 'bottom', horizontal: 'left' },
     });
     const allProducts = await getAll('products');
     allProducts.sort((a, b) => a.name.localeCompare(b.name));
