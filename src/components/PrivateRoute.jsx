@@ -13,11 +13,7 @@ export const PrivateRoute = ({ children }) => {
     <Navigate to="/admin" replace />;
     return children;
   }
-  if (isAuth && isAdmin) {
-    <Navigate to="/admin" replace />;
-    return children;
-  }
-  if (!isAuth && !isAdmin) {
+  if (!isAuth || !isAdmin) {
     return <Navigate to="/forbidden" replace />;
   }
 };

@@ -94,13 +94,6 @@ const Home = (props) => {
     setCurrentPage(Number(searchParams.get('page')) || 1);
   }, [location]);
 
-  // if (!PRODUCTS_COUNT) {
-  //   return (
-  //     <Typography variant="h5" color="text.main" textAlign="center">
-  //       No products
-  //     </Typography>
-  //   );
-  // }
   return (
     <Container width="lg" style={{ padding: '0px' }}>
       <Box sx={{ marginLeft: '24px' }}>

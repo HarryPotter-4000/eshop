@@ -30,7 +30,7 @@ const AddProductForm = ({ setIsAddModalOpened, setProducts }) => {
       severity: 'success',
       open: true,
       autoHideDuration: 2000,
-      position: { vertical: 'top', horizontal: 'center' },
+      position: { vertical: 'bottom', horizontal: 'left' },
     });
     const allProducts = await getAll('products');
     allProducts.sort((a, b) => a.name.localeCompare(b.name));
