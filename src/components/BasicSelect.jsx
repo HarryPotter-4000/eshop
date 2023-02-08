@@ -28,11 +28,11 @@ const BasicSelect = ({ filterName, setFilterName, filterNames }) => {
       sx={{
         width: {
           md: '300px',
-          xs: '200px',
+          xs: '220px',
         },
       }}
     >
-      {FILTERS_COUNT && (
+      {FILTERS_COUNT > 0 && (
         <FormControl fullWidth size="small">
           <InputLabel id="demo-simple-select-label">Name</InputLabel>
           <Select

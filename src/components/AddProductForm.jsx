@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { TextField, Box, Button } from '@mui/material';
 import { useContext, useRef } from 'react';
 import { postProducts } from '../utils/api';
@@ -34,6 +33,7 @@ const AddProductForm = ({ setIsAddModalOpened, setProducts }) => {
       position: { vertical: 'top', horizontal: 'center' },
     });
     const allProducts = await getAll('products');
+    allProducts.sort((a, b) => a.name.localeCompare(b.name));
     setProducts(allProducts);
   };
 

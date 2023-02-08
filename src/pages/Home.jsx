@@ -1,5 +1,5 @@
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -9,17 +9,14 @@ import {
   Typography,
   Stack,
 } from '@mui/material';
-import AddBusinessIcon from '@mui/icons-material/AddBusiness';
 import CasinoIcon from '@mui/icons-material/Casino';
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ClearIcon from '@mui/icons-material/Clear';
-import AuthContext from '../utils/authContext';
 import Modal from '../components/Modal';
 import { getAll } from '../utils/api';
 import useNavigateParams from '../utils/useNavigateParams';
-import AddProductForm from '../components/AddProductForm';
 import BasicSelect from '../components/BasicSelect';
 import ProductList from '../components/ProductList';
 import Spinner from '../components/Spinner';
@@ -31,15 +28,12 @@ const Home = (props) => {
   const [filterName, setFilterName] = useState('');
   const [isRandomProductModalOpened, setIsRandomProductModalOpened] =
     useState(false);
-  const [isAddModalOpened, setIsAddModalOpened] = useState(false);
   const [searchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(
     Number(searchParams.get('page')) || 1
   );
   const randomProduct = products[Math.floor(Math.random() * products.length)];
 
-  const { user } = useContext(AuthContext);
-  const ADMIN_EMAIL = 'admin@admin.com';
   const location = useLocation();
 
   useEffect(() => {
@@ -100,38 +94,18 @@ const Home = (props) => {
     setCurrentPage(Number(searchParams.get('page')) || 1);
   }, [location]);
 
+  // if (!PRODUCTS_COUNT) {
+  //   return (
+  //     <Typography variant="h5" color="text.main" textAlign="center">
+  //       No products
+  //     </Typography>
+  //   );
+  // }
   return (
     <Container width="lg" style={{ padding: '0px' }}>
-      {user && user?.email === ADMIN_EMAIL && (
-        <Box sx={{ marginLeft: '24px' }}>
-          <Button
-            size="large"
-            color="price"
-            startIcon={<AddBusinessIcon />}
-            onClick={() => setIsAddModalOpened(true)}
-          >
-            Add new product
-          </Button>
-        </Box>
-      )}
-      {isAddModalOpened && (
-        <Modal onClose={() => setIsAddModalOpened(false)}>
-          <Typography pb={2} variant="h5" color="text.main">
-            Add new product
-          </Typography>
-          <Box>
-            <AddProductForm
-              setIsAddModalOpened={setIsAddModalOpened}
-              products={products}
-              setProducts={setProducts}
-              setFilters={setFilterNames}
-            />
-          </Box>
-        </Modal>
-      )}
-
       <Box sx={{ marginLeft: '24px' }}>
         <Button
+          sx={{ padding: '16px 0px' }}
           size="large"
           startIcon={<CasinoIcon />}
           onClick={() => setIsRandomProductModalOpened(true)}
@@ -173,7 +147,18 @@ const Home = (props) => {
       <Box
         sx={{
           display: 'flex',
-          justifyContent: 'space-between',
+          flexDirection: {
+            sm: 'row',
+            xs: 'column',
+          },
+          justifyContent: {
+            sm: 'space-between',
+            xs: 'center',
+          },
+          alignItems: {
+            sm: 'center',
+            xs: 'flex-start',
+          },
           margin: '16px 24px ',
         }}
       >
@@ -181,6 +166,10 @@ const Home = (props) => {
           sx={{
             display: 'flex',
             justifyContent: 'flex-start',
+            marginBottom: {
+              sm: '0px',
+              xs: '16px',
+            },
           }}
         >
           <BasicSelect
@@ -217,19 +206,13 @@ const Home = (props) => {
       </Box>
       <Stack
         sx={{
-          width: {
-            lg: '1200px',
-            md: '900px',
-            sm: '600px',
-            xs: '300px',
-          },
           display: 'flex',
           flexDirection: {
             sm: 'row',
             xs: 'column',
           },
           flexWrap: 'wrap',
-          justifyContent: 'flex-start',
+          justifyContent: 'center',
           alignItems: 'space-around',
           margin: '0 auto',
         }}
