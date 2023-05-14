@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {
   Button,
   TextField,
@@ -8,8 +7,11 @@ import {
   InputAdornment,
 } from '@mui/material';
 import { useForm } from 'react-hook-form';
+import { useContext } from 'react';
+import SnackbarContext from '../utils/snackContext';
 
 export default function OrderPage() {
+  const { setSnack } = useContext(SnackbarContext);
   const {
     register,
     handleSubmit,
@@ -23,6 +25,13 @@ export default function OrderPage() {
     data.email = data.email.trim();
     console.log(JSON.stringify(data));
     reset();
+    setSnack({
+      message: 'Your order has been successfully made',
+      severity: 'success',
+      open: true,
+      autoHideDuration: 2000,
+      position: { vertical: 'bottom', horizontal: 'left' },
+    });
   };
 
   return (

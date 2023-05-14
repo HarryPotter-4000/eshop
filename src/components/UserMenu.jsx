@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState, useContext } from 'react';
 import { Box, Menu, MenuItem, IconButton } from '@mui/material';
 import AvatarIcon from '../assets/AvatarIcon';
@@ -10,7 +10,7 @@ import AuthContext from '../utils/authContext';
 function UserMenu() {
   const [anchorEl, setAnchorEl] = useState(null);
   const { user } = useContext(AuthContext);
-
+  const navigate = useNavigate();
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -22,6 +22,7 @@ function UserMenu() {
   const logout = async () => {
     await signOut(auth);
     setAnchorEl(null);
+    navigate('/');
   };
 
   return (

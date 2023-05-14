@@ -10,8 +10,9 @@ import Header from './components/Header';
 import LoginPage from './pages/LoginPage';
 import { AuthProvider } from './utils/authContext';
 import PrivateRoute from './components/PrivateRoute';
-
 import SnackbarContent from './utils/snackContext';
+import AdminPage from './pages/AdminPage';
+import ForbiddenPage from './pages/ForbiddenPage';
 
 function App() {
   const [order, setOrder] = useState([]);
@@ -101,16 +102,15 @@ function App() {
             }
           />
           <Route path="/login" element={<LoginPage />} />
-
+          <Route path="/order" element={<OrderPage />} />
           <Route
-            path="/order"
+            path="/admin"
             element={
               <PrivateRoute>
-                <OrderPage />
+                <AdminPage />
               </PrivateRoute>
             }
           />
-
           <Route
             path="/cart"
             element={
@@ -122,6 +122,7 @@ function App() {
               />
             }
           />
+          <Route path="/forbidden" element={<ForbiddenPage />} />
         </Routes>
       </AuthProvider>
     </Container>

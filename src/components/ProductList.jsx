@@ -16,20 +16,22 @@ function ProductList(props) {
     >
       <Stack
         sx={{
-          width: {
-            lg: '1200px',
-            md: '900px',
-            sm: '600px',
-            xs: '300px',
-          },
+          width: '100%',
           display: 'flex',
           flexDirection: {
             sm: 'row',
             xs: 'column',
           },
           flexWrap: 'wrap',
-          justifyContent: 'flex-start',
-          alignItems: 'flex-start',
+          justifyContent: {
+            lg: 'center',
+            md: 'flex-start',
+            xs: 'center',
+          },
+          alignItems: {
+            sm: 'flex-start',
+            xs: 'center',
+          },
         }}
       >
         {products.map((product) => {

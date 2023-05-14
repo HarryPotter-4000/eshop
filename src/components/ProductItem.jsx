@@ -28,7 +28,7 @@ export default function ProductItem(props) {
     >
       <CardMedia
         component="img"
-        alt="green iguana"
+        alt={other.name}
         height="140"
         image={other.image}
       />
@@ -42,7 +42,16 @@ export default function ProductItem(props) {
         }}
       >
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography
+            gutterBottom
+            variant="h5"
+            component={Link}
+            to={`/product/${id}`}
+            sx={{
+              textDecoration: 'none',
+              color: 'text.main',
+            }}
+          >
             {other.name}
           </Typography>
           <Typography

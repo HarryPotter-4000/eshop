@@ -1,4 +1,4 @@
-import { ref, set, push } from 'firebase/database';
+import { ref, set, push, remove } from 'firebase/database';
 import { database as db } from './firebase';
 
 const productsRef = ref(db, 'products');
@@ -29,6 +29,17 @@ const getOne = async (resource, id) => {
     `https://eshop-9ddf6-default-rtdb.firebaseio.com/${resource}/${id}.json`
   );
   return await product.json();
+};
+
+const deleteProduct = async (id) => {
+  const productRef = ref(db, `products/${id}`);
+  return remove(productRef)
+    .then(() => {
+      return '200 Deleted';
+    })
+    .catch((error) => {
+      return error;
+    });
 };
 
 const getAll = async (resource) => {
@@ -62,4 +73,4 @@ const api = async (resource, options = { method: 'GET', body: {} }) => {
 // get one product : getOne('products', id)
 // add product : postProducts(product)
 
-export { getOne, getAll, postProducts };
+export { getOne, getAll, postProducts, deleteProduct };

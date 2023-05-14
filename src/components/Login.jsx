@@ -52,7 +52,7 @@ export default function SignIn() {
     reset();
   };
   if (user) {
-    return <Navigate to="/" />;
+    <Navigate to="/" replace />;
   }
 
   return (

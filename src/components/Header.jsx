@@ -1,6 +1,5 @@
-import * as React from 'react';
-import Logo from '../assets/image/logo.png';
-import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useState, useContext } from 'react';
 import {
   AppBar,
   Badge,
@@ -12,19 +11,37 @@ import {
   Container,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Link } from 'react-router-dom';
 import CartIcon from '../assets/CartIcon';
+import Logo from '../assets/image/logo.png';
 import UserMenu from './UserMenu';
+import AuthContext from '../utils/authContext';
 
 function Header({ orderLen }) {
+  const { user } = useContext(AuthContext);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
+  const ADMIN_EMAIL = 'admin@admin.com';
+  const isAdmin = user?.email === ADMIN_EMAIL;
   const drawer = (
-    <Box onClick={handleDrawerToggle} m="16px">
+    <Stack onClick={handleDrawerToggle} m="24px" spacing={3}>
+      {user && isAdmin && (
+        <Link
+          style={{
+            textDecoration: 'none',
+            color: '#fff',
+            fontSize: '20px',
+            fontWeight: '600',
+          }}
+          to="/admin"
+        >
+          Admin
+        </Link>
+      )}
+
       <Link
         style={{
           textDecoration: 'none',
@@ -36,7 +53,7 @@ function Header({ orderLen }) {
       >
         Home
       </Link>
-    </Box>
+    </Stack>
   );
 
   return (
@@ -62,6 +79,28 @@ function Header({ orderLen }) {
           </Box>
           <Stack direction="row" spacing={2} alignItems="center">
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+              {user && isAdmin && (
+                <Link
+                  style={{
+                    textDecoration: 'none',
+                    color: '#fff',
+                    fontSize: '20px',
+                    fontWeight: '600',
+                    marginRight: '24px',
+                    '&:hover': {
+                      color: '#FF1E56',
+                      transition: 'all 0.3s ease-out',
+                    },
+                    '&:active': { color: '#FF1E56' },
+                    '&:focus': {
+                      color: '#FF1E56',
+                    },
+                  }}
+                  to="/admin"
+                >
+                  Admin
+                </Link>
+              )}
               <Link
                 style={{
                   textDecoration: 'none',
