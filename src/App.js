@@ -13,9 +13,10 @@ import PrivateRoute from './components/PrivateRoute';
 import SnackbarContent from './utils/snackContext';
 import AdminPage from './pages/AdminPage';
 import ForbiddenPage from './pages/ForbiddenPage';
+import useLocalStorage from './utils/useLocalStorage';
 
 function App() {
-  const [order, setOrder] = useState([]);
+  const [order, setOrder] = useLocalStorage('order', []);
 
   const { setSnack } = useContext(SnackbarContent);
 
@@ -86,13 +87,13 @@ function App() {
   };
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth='lg'>
       <AuthProvider>
         <Header orderLen={order.length} />
         <Routes>
-          <Route path="/" element={<Home addToOrder={addToOrder} />} />
+          <Route path='/' element={<Home addToOrder={addToOrder} />} />
           <Route
-            path="/product/:id"
+            path='/product/:id'
             element={
               <ProductPage
                 addToOrder={addToOrder}
@@ -101,10 +102,10 @@ function App() {
               />
             }
           />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/order" element={<OrderPage />} />
+          <Route path='/login' element={<LoginPage />} />
+          <Route path='/order' element={<OrderPage />} />
           <Route
-            path="/admin"
+            path='/admin'
             element={
               <PrivateRoute>
                 <AdminPage />
@@ -112,7 +113,7 @@ function App() {
             }
           />
           <Route
-            path="/cart"
+            path='/cart'
             element={
               <Cart
                 order={order}
@@ -122,7 +123,7 @@ function App() {
               />
             }
           />
-          <Route path="/forbidden" element={<ForbiddenPage />} />
+          <Route path='/forbidden' element={<ForbiddenPage />} />
         </Routes>
       </AuthProvider>
     </Container>
