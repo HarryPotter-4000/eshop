@@ -1,5 +1,5 @@
 import './App.css';
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import { Routes, Route } from 'react-router';
 import { Container } from '@mui/material';
 import Home from './pages/Home';
