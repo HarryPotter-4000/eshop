@@ -1,131 +1,151 @@
-import * as React from "react";
-import Logo from "../assets/image/logo.png";
+import { Link } from 'react-router-dom';
+import { useState, useContext } from 'react';
 import {
   AppBar,
+  Badge,
   Box,
   Drawer,
   Toolbar,
   Stack,
   IconButton,
-  List,
-  ListItem,
-  ListItemButton,
   Container,
-} from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import { Link } from "react-router-dom";
-import CartIcon from "../assets/CartIcon";
-import UserMenu from "./UserMenu";
+} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import CartIcon from '../assets/CartIcon';
+import Logo from '../assets/image/logo.png';
+import UserMenu from './UserMenu';
+import AuthContext from '../utils/authContext';
 
-const HEADER_NAVIGATION = [
-  {
-    url: "/",
-    caption: "Home",
-  },
-  {
-    url: "/order",
-    caption: "Order",
-  },
-];
-
-function Header() {
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+function Header({ orderLen }) {
+  const { user } = useContext(AuthContext);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
+  const ADMIN_EMAIL = 'admin@admin.com';
+  const isAdmin = user?.email === ADMIN_EMAIL;
   const drawer = (
-    <Box onClick={handleDrawerToggle}>
-      <List space={2}>
-        {HEADER_NAVIGATION.map(({ url, caption }) => (
-          <ListItem key={url} disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }}>
-              <Link
-                style={{
-                  textDecoration: "none",
-                  color: "#fff",
-                  fontSize: "20px",
-                  fontWeight: "600",
-                }}
-                to={url}
-              >
-                {caption}
-              </Link>
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
+    <Stack onClick={handleDrawerToggle} m="24px" spacing={3}>
+      {user && isAdmin && (
+        <Link
+          style={{
+            textDecoration: 'none',
+            color: '#fff',
+            fontSize: '20px',
+            fontWeight: '600',
+          }}
+          to="/admin"
+        >
+          Admin
+        </Link>
+      )}
+
+      <Link
+        style={{
+          textDecoration: 'none',
+          color: '#fff',
+          fontSize: '20px',
+          fontWeight: '600',
+        }}
+        to="/"
+      >
+        Home
+      </Link>
+    </Stack>
   );
 
   return (
-    <Container sx={{ display: "flex" }}>
+    <Container sx={{ display: 'flex' }}>
       <AppBar
         component="nav"
         sx={{
-          height: "70px",
-          backgroundColor: "#ff900c",
+          height: '70px',
+          backgroundColor: '#ff900c',
         }}
       >
         <Toolbar
           sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
           }}
         >
-          <Box pt={1} sx={{ justifyContent: "flex-start" }}>
-            <Link style={{ textDecoration: "none" }} to={"/"}>
+          <Box pt={1} sx={{ justifyContent: 'flex-start' }}>
+            <Link style={{ textDecoration: 'none' }} to={'/'}>
               <img src={Logo} alt="Logo" width={100} />
             </Link>
           </Box>
           <Stack direction="row" spacing={2} alignItems="center">
-            <Box sx={{ display: { xs: "none", sm: "block" } }}>
-              {HEADER_NAVIGATION.map(({ url, caption }) => (
+            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+              {user && isAdmin && (
                 <Link
-                  key={url}
                   style={{
-                    textDecoration: "none",
-                    color: "#fff",
-                    paddingRight: "24px",
-                    fontSize: "20px",
-                    fontWeight: "600",
-                    "&:hover": {
-                      color: "#FF1E56",
-                      transition: "all 0.3s ease-out",
+                    textDecoration: 'none',
+                    color: '#fff',
+                    fontSize: '20px',
+                    fontWeight: '600',
+                    marginRight: '24px',
+                    '&:hover': {
+                      color: '#FF1E56',
+                      transition: 'all 0.3s ease-out',
                     },
-                    "&:active": { color: "#FF1E56" },
-                    "&:focus": {
-                      color: "#FF1E56",
+                    '&:active': { color: '#FF1E56' },
+                    '&:focus': {
+                      color: '#FF1E56',
                     },
                   }}
-                  to={url}
+                  to="/admin"
                 >
-                  {caption}
+                  Admin
                 </Link>
-              ))}
+              )}
+              <Link
+                style={{
+                  textDecoration: 'none',
+                  color: '#fff',
+                  fontSize: '20px',
+                  fontWeight: '600',
+                  '&:hover': {
+                    color: '#FF1E56',
+                    transition: 'all 0.3s ease-out',
+                  },
+                  '&:active': { color: '#FF1E56' },
+                  '&:focus': {
+                    color: '#FF1E56',
+                  },
+                }}
+                to="/"
+              >
+                Home
+              </Link>
             </Box>
-
-            <Link style={{ textDecoration: "none" }} to={"/cart"}>
-              <CartIcon />
-            </Link>
-            <UserMenu sx={{ display: { xs: "none", sm: "block" } }} />
+            <IconButton
+              component={Link}
+              style={{ textDecoration: 'none' }}
+              to={'/cart'}
+            >
+              <Badge color="secondary" badgeContent={orderLen}>
+                <CartIcon />
+              </Badge>
+            </IconButton>
+            <UserMenu sx={{ display: { xs: 'none', sm: 'block' } }} />
             <IconButton
               color="#ff900c"
               aria-label="open drawer"
               edge="start"
               onClick={handleDrawerToggle}
-              sx={{ display: { sm: "none" } }}
+              sx={{ display: { sm: 'none' } }}
             >
-              <MenuIcon sx={{ color: "#fff", fontSize: 30 }} />
+              <MenuIcon sx={{ color: '#fff', fontSize: 30 }} />
             </IconButton>
           </Stack>
         </Toolbar>
       </AppBar>
       <Box component="nav">
         <Drawer
-          anchor={"right"}
+          anchor={'right'}
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
@@ -133,11 +153,11 @@ function Header() {
             keepMounted: true, // Better open performance on mobile.
           }}
           sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: "200px",
-              backgroundColor: "#ff900c",
+            display: { xs: 'block', sm: 'none' },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              width: '200px',
+              backgroundColor: '#ff900c',
             },
           }}
         >
